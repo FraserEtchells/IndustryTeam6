@@ -1,0 +1,1 @@
+Roman's code (qs.py) to read the dataset (contained in catgeories folder), parse it, and then upload it to the database (any previous data in the database gets overwritten). 
