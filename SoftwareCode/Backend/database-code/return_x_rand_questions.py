@@ -19,13 +19,8 @@ max_ID = (my_col.count_documents({})) + 1
 pprint("Max number is: ")
 pprint(max_ID)
 
-num = 1
-
-newRand = random.choice(range(1, max_ID))
-questIDs.append(newRand)
-
-pprint(questIDs)
-
+# while loop to get the required number of random IDs, while also not accepting duplicates
+num = 0
 while num < numQuests:
     newNum = False
     newRand = 0
@@ -33,29 +28,30 @@ while num < numQuests:
         pprint("Line 28")
         newRand = random.choice(range(1, max_ID))
         temp = 0
-        pprint(questIDs[temp])
         pprint(len(questIDs))
         while temp < len(questIDs):
-            pprint(temp)
             if newRand != questIDs[temp]:
                 newNum = True
                 pprint("Line 33")
                 break
             temp = temp + 1
-    questIDs.append(newRand)
-    pprint(newRand)
-    num = num + 1
-    
+        questIDs.append(newRand)
+        pprint(newRand)
+        num = num + 1
+
+# print the IDs generated
 pprint(questIDs)
 
+# create a list to hold the questions & get them from database
 tempQuests = []
 tempQuests = my_col.find({}, {"_id":0})
-# for ID in questIDs:
-#     tempQuests.append(my_col.find({}, { "_id":0}))
+
+# transfer the questions we want (according to IDs generated) into a new list & get rid of original
 randQuests = []
 for ID in questIDs:
     randQuests.append(tempQuests[ID])
+del tempQuests
 
-pprint(randQuests)
-#for doc in my_docs:
- #   pprint(doc)
+# print the questions that have been selected
+for quest in randQuests:
+    pprint(quest)
