@@ -15,3 +15,5 @@ SSL: **True**
     Query to return all entries (documents) in the specified collection
 * Insert many
     Query to insert an array of data as multiple separate documents
+* Search
+    Query to return entries that match specifed columns
