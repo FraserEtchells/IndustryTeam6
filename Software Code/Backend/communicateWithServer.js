@@ -7,3 +7,25 @@ const CHAT= "CHAT";
 const POINTS= "POINTS";
 const QUIT= "QUIT";
 const SCORE="SCORE";
+
+/**
+ * Funtion to created the commands understood by the python server
+ * @param {*} command - the command that is needing to be added
+ * @param {*} value - the value of the command being set
+ * @param {*} existingCommand -The oringial command the new command will be appended to
+ * returns- the full command as a string
+ */
+function buildMessage(command, value="", existingCommand=""){
+    var finishedCommand="";
+    if(existingCommand !==""){
+        finishedCommand=String(existingCommand)+":";
+    }
+
+    finishedCommand += String(command).toUpperCase()
+
+    if(value!==""){
+        finishedCommand +=":"+String(value);
+    }
+
+    return finishedCommand;
+}
