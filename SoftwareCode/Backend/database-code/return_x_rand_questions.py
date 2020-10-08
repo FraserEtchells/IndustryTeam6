@@ -25,32 +25,31 @@ while num < numQuests:
     newNum = False
     newRand = 0
     while newNum != True:
-        pprint("Line 28")
         newRand = random.choice(range(1, max_ID))
         temp = 0
-        pprint(len(questIDs))
         while temp < len(questIDs):
             if newRand != questIDs[temp]:
                 newNum = True
-                pprint("Line 33")
                 break
             temp = temp + 1
         questIDs.append(newRand)
-        pprint(newRand)
         num = num + 1
 
 # print the IDs generated
 pprint(questIDs)
 
-# create a list to hold the questions & get them from database
-tempQuests = []
-tempQuests = my_col.find({}, {"_id":0})
+# depreciated - create a list to hold the questions & get them from database
+# tempQuests = []
+# tempQuests = my_col.find({}, {"_id":0})
+# pprint(tempQuests)
 
-# transfer the questions we want (according to IDs generated) into a new list & get rid of original
+# create a list to hold questions & get from database, transfer the questions we want (according to IDs generated) into a new list & get rid of original
 randQuests = []
 for ID in questIDs:
-    randQuests.append(tempQuests[ID])
-del tempQuests
+    quest = list(my_col.find({"id" : int(ID)}, {"_id":0}))
+    randQuests.append(quest)
+    # randQuests.append(tempQuests[ID])
+# del tempQuests
 
 # print the questions that have been selected
 for quest in randQuests:
