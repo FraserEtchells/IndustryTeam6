@@ -1,0 +1,44 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+
+
+body {
+  font: 50px;
+  font-family: 'Passion One', cursive;
+  margin: 20px;
+  background: #7E549F;  overflow: hidden;
+  text-align: center;
+}
+
+.container{
+    width: 550px;
+}
+
+.leadheader {
+  margin-top: 100px;
+  background-color: #422D53;
+  color: #C3B0D3;
+   width: 100%;
+  height: 50px;
+  font-size: 45px;
+  text-align: center;
+  border-radius: 5px 5px 0 0;
+    margin: 0;
+  padding-bottom: 25px;
+}
+
+.card {
+  background-color: #C3B0D3;
+  color: #2A1D34;
+  margin: 0 auto;
+  font-size: 45px;
+  height: 70px;
+}
+
+.card img{
+
+      position: relative;
+    top: 10px;
+}
+
+
