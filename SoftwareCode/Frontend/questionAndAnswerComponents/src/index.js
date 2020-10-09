@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+
 import styled from "styled-components";
 
 // grid width can be changed depending on how big the other components are
