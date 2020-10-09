@@ -1,7 +1,6 @@
 #Quiz Server Lobby
 #Ross Mitchell
 
-
 import selectors
 import socket
 from datetime import datetime
@@ -10,7 +9,6 @@ import re
 import types
 import random
 import string
-
 
 platform.node()
 HEADERSIZE = 10
@@ -36,6 +34,7 @@ class User:
         self.username = ''
         #What channels the user is part of
         self.lobby = ''
+        self.score = 0
         #Call to the main function of the User class
         self.main()              
 
@@ -58,8 +57,11 @@ class User:
                     #Saves the username of the user as their class variable
                     self.lobby = parse1[3]
                     if self.lobby in Lobbies:
-                        Lobbies[self.Lobby]["Users"].append(self)
-                        loggedin = False
+                        if self.userName in Lobbies[self.lobby].values():
+                            Lobbies[self.lobby]["Users"].append(self)
+                            loggedin = False
+                        else:
+                            loggedin = True
                     else:
                         loggedin = True
                     
@@ -76,7 +78,11 @@ class User:
                     #saves the nickname of the Client to their users class variable
                     self.userName = parse1[1]
                     #Saves the username of the user as their class variable
-                    self.lobby = randStr()
+                    unique = False
+                    while unique == False:
+                        self.lobby = randStr()
+                        if self.lobby not in Lobbies:
+                            unique = True
                     Lobbies[self.lobby] = {"Users" : [self]}
                     loggedin = False
                     return loggedin
@@ -93,20 +99,34 @@ class User:
             print('Welcome')
             
         else:
-            #This is message 433 This is used if the users nick name was already being used
-            error = self.username + " is a name already being used\n"
-            #This sends this error message to the client
-            self.sock.send(error.encode())         
+            print('Error')        
 
 #Function for a person quitting the server
-def quitting(command, p):
+def quitting(command, p, code):
     #Splits the address to get the ip
-    pAddr = repr(p.addr).split("'")
-    #loops through the clients list
-    for i in Lobbies:
+    message = 'NAME' + p.Username + ': QUIT \n'
+    for i in Lobbies[code].values():
+        i.sock.send(message.encode())
+
+#Function for a person quitting the server
+def chat(command, p, code):
+    #Splits the address to get the ip
+    pCommand = command.split(":")
+    info = pCommand[5]
+    message = 'NAME' + p.username + ': CHAT :' + info + '\n'
+    for i in Lobbies[code].values():
         #Preps the message to say the bot has left
-        message = ':' + p.nickName + '!' + p.username + "@" +pAddr[1] + " "  + command + '\n'
-        #Sends the encoded message
+        if (p.Username != i.Username):
+            i.sock.send(message.encode())
+
+#Function for a person quitting the server
+def score(command, p, code):
+    #Splits the address to get the ip
+    pCommand = command.split(":")
+    score = pCommand[5]
+    p.score = score + p.score
+    message = 'NAME' + p.Username + ': SCORE :' + p.score + '\n'
+    for i in Lobbies[code].values():
         i.sock.send(message.encode())
 
 #This is for the buffer accepting the connectio
@@ -147,35 +167,74 @@ def service_connection(key, mask):
             else:
                 point = 0
                 addr = ''
+                code = ''
                 #go through the client
                 for i in Lobbies:
-                    #check ip address is of the user
-                    if data.addr == i.addr:
-                        #save where the user we are looking for is
-                        addr = data.addr
-                        point = i
+                    for x in i:
+                        #check ip address is of the user
+                        if data.addr == x.addr:
+                            #save where the user we are looking for is
+                            addr = data.addr
+                            point = i
+                            code = x.lobby
                 print('closing connection to', data.addr)
                 #This unregisters the socket with the selector
                 selector.unregister(sock)
                 #Closes the socket
                 sock.close()
                 #Removes the info about them from Clients list
-                Lobbies.remove(point)
+                Lobbies[code].remove(point)
         #This is if you want to write to the socket
         if mask & selectors.EVENT_WRITE:
             #if there is data
             if data.outb:
                 pointer = 0
                 addr = ''
-                #Checks correct address
-                if data.addr == i.addr:
-                #saves the address
-                    addr = data.addr
-                    #saves pointer to item in list we are looking for
-                    pointer = i
+                parse = data.outb.split(":")
+                code = parse[3]
+                #reads through the client list
+                for i in Lobbies[code].values():
+                    #Checks correct address
+                    if data.addr == i.addr:
+                        #saves the address
+                        addr = data.addr
+                        #saves pointer to item in list we are looking for
+                        pointer = i
                 #Prints whatever is received
                 print('echoing', repr(data.outb), 'to', data.addr)
                 i = 0
+                #if we receive pirvate mesaage
+                if "QUIT" in repr(data.outb):
+                    #decodes the command
+                    command = data.outb.decode()
+                    #calls the funtion quitting
+                    quitting(command, pointer, code)
+                    print('closing connection to', data.addr)
+                    #unregisters the socket
+                    selector.unregister(sock)
+                    #closes the socket
+                    pointer.sock.close()
+                    #removes the client info
+                    Lobbies[code].remove(pointer)
+                    i = 1
+                #if we receive a channel join command
+                elif "CHAT" in repr(data.outb):
+                    #decodes command
+                    command = data.outb.decode()
+                    chat(command, pointer, code)
+                #if we receive a leave channel command
+                elif "SCORE" in repr(data.outb):
+                    #decodes the command
+                    command = data.outb.decode()
+                    #calls the function for leaving the channel
+                    score(command, pointer, code)
+                #checks that the socket hasnt closed
+                if i==0:
+                    #sends item to the sockets
+                    sent = sock.send(data.outb)
+                    #sends the information aswell
+                    data.outb = data.outb[sent:]
+                i=0
     #Exception if the socket has an error
     except(socket.error):
         #unregisters socket
@@ -183,7 +242,7 @@ def service_connection(key, mask):
         #closes the socket
         pointer.sock.close()
         #deleters users info
-        Lobbies.remove(pointer)
+        #Lobbies[].remove(pointer)
 
 
 #This listens to the socket after it has been set up for a connection
