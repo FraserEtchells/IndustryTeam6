@@ -1,24 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import styled from "styled-components";
+import { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+ @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+  body {
+    background-color:  #7E549F;
+    font-family: 'Passion One', cursive;
+    overflow: hidden;
+    text-align: center;
+    font: 50px;
+  }
+`;
 
 // grid width can be changed depending on how big the other components are
 export const Grid = styled.div`
-  background-color: #7E549F;
-  width: 920px;
+  background-color: #7E549F; // purple
+  width: 940px;
 `;
 
+
+//display: flex; stretches it out a bit vertically but then the text doesn't center align
+//display: block; FIXES IT <3
+
+//adding height stops it from stretching vertically
+//but seems to put it in the top 'line' so if it's a long question it'll wrap to the line below
+//so if it's a short one it leaves a gap for the line underneath
 export const QuestionRow = styled.div`
-  display: flex;
-  background-color: #CAB1DE;
-  justifyContent:center;
+  display: block;
+  background-color: #CAB1DE; // lilac
+  justifyContent: center;
   alignItems: center;
-  margin: 10px 0px;
+  margin:;
+  padding: 5px 5px;
   text-align: center;
+  height:px;
 `;
 
-//text-align: center; <----doesn't work
+export const QuestionText = styled.h2`
+
+`;
 
 export const Row = styled.div`
   display: flex;
@@ -34,43 +56,67 @@ export const Col = styled.div`
 // button width used to be 400px but changed to percentage so it resizes
 
 const Button1 = styled.button`
-  background: #FB836F;
+  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+    font-family: 'Passion One', cursive;
+
+  background: #FB836F; // orange
   color: white;
   border: none;
   width: 50%;
   height: 200px;
   font-size: 20px;
-  margin: 10px 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 5px;
   `;
 
 const Button2 = styled.button`
-  background: #4E937A;
+  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+    font-family: 'Passion One', cursive;
+
+  background: #4E937A; // green
   color: white;
   border: none;
   width: 50%;
   height: 200px;
   font-size: 20px;
-  margin: 10px 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 0px;
   `;
 
 const Button3 = styled.button`
-  background: #E3B538;
+  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+    font-family: 'Passion One', cursive;
+
+  background: #E3B538; // yellow
   color: white;
   border: none;
   width: 50%;
   height: 200px;
   font-size: 20px;
-  margin: 10px 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  margin-right: 5px;
   `;
 
 const Button4 = styled.button`
-  background: #C1549C;
+  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+    font-family: 'Passion One', cursive;
+
+  background: #C1549C; // pink
   color: white;
   border: none;
   width: 50%;
   height: 200px;
   font-size: 20px;
-  margin: 10px 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 0px;
   `;
 
 // button border and colour if we decide to use it
@@ -86,11 +132,15 @@ class App extends React.Component {
 
   render() {
     return (
+    <React.Fragment>
+    <GlobalStyle/>
     <div className="App">
 
       <Grid>
         <QuestionRow>
-          <h2>QUESTION QUESTION QUESTION QUESTION?</h2>
+          <QuestionText>
+            QUESTION QUESTION QUESTION QUESTION?
+          </QuestionText>
         </QuestionRow>
 
         <Row>
@@ -105,6 +155,8 @@ class App extends React.Component {
       </Grid>
 
     </div>
+
+    </React.Fragment>
     );
   }
 }
