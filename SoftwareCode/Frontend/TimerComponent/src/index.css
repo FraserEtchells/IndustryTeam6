@@ -1,0 +1,31 @@
+.progress-div {
+  background-color: rgb(233, 233, 233);
+  border-radius: 2rem;
+}
+
+.progress {
+  background: rgb(24, 204, 147);
+  background: linear-gradient(
+    90deg,
+    rgba(210, 0, 160, 1) 0%,
+    rgba(210, 0, 160, 0.6264880952380952) 52%,
+    rgba(210, 0, 160, 0.4332107843137255) 100%
+  );
+
+  height: 20px;
+  transition: 1s linear;
+  transition-delay: 0s;
+  border-radius: 2rem;
+}
+
+.progressComp h1 {
+  font-size: 10px;
+}
+
+.percent-number {
+  color: rgb(121, 121, 121);
+}
+
+.countdown {
+    font-size: 24pt;
+}
