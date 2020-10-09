@@ -1,11 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 import dogicon from './assets/doggo.png'
-import './index.css';
 
+
+const GlobalStyle = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+  body {
+    background-color:  #7E549F;
+    font-family: 'Passion One', cursive;
+    overflow: hidden;
+    text-align: center;
+  
+  }
+`;
 export const Grid = styled.div`
-
+ 
 `;
 
 export const Row = styled.div`
@@ -13,35 +24,82 @@ export const Row = styled.div`
 	display: flex;
 	background-color: #c3b0d3;
 	display: block ruby;
+  margin: 0;
 `;
+
 
 export const Col = styled.div`
 	flex: ${(props) => props.size};
+
+
 `;
 
 const CardStyle = styled.div`
-	
+
 	display: table;
-	padding-left: 30px;
 	padding-right: 30px;
+  font-size: 35px;
+  background-color: #C3B0D3;
+  color: #2A1D34;
+  margin: 0; 
+
+
 `;
+
+const TextStyle = styled.p`
+  margin: 0px 0px;
+
+`;
+
+const CardImg = styled.div`
+
+   position: relative;
+    top: 15px;
+    padding-bottom: 15px;
+
+
+`;
+
+const Leadheader =  styled.div`
+    margin-top: 100px;
+  background-color: #422D53;
+  color: #C3B0D3;
+   width: 100%;
+  height: 50px;
+  font-size: 45px;
+  text-align: center;
+  border-radius: 5px 5px 0 0;
+    margin: 0;
+  padding-bottom: 25px;
+`;
+
+
+const Container =  styled.div`
+
+  width: 550px;
+
+`;
+
+
+
 
 console.log(dogicon);
 
 const LeaderboardHeader = () => {
   return (
-    <div className="leadheader">
+    <Leadheader>
         <h2>LEADERBOARD</h2>
-    </div>
+    </Leadheader>
   )
 }
 class Card extends React.Component {
   render(){
     return (
-      <div className="card">
-        <p>{this.props.name}</p> <p>{this.props.score}</p> <img src={this.props.icon} alt=""/>
-      </div>
+      <CardStyle>
+        <TextStyle>{this.props.name}</TextStyle><TextStyle>{this.props.score}</TextStyle> <img src={this.props.icon} alt=""/>
+      </CardStyle>
     )
+
   }
 }
 
@@ -67,41 +125,60 @@ class App extends React.Component {
       const{score} = this.state;
       const{icon} = this.state;
       return (
-     	<div className="container">  
+      <React.Fragment>
+      <GlobalStyle/>
+      	<Container>
 
           <LeaderboardHeader />
 
-        	<Grid>
-        		<Row>
-        		<CardStyle>
-        			<Col size={1}>
-	          			<Card icon={icon}/>
-	          			<Card icon={icon}/>
-	          			<Card icon={icon}/>
-	           		</Col>
-	           	</CardStyle>
-	           	<CardStyle>		
-        			<Col size={1}>
-	          			<Card name ={name} />
-	          			<Card name ={name} />
-	          			<Card name ={name} />
-	           		</Col>
-	           	</CardStyle>
-	           	<CardStyle>	
-	           		<Col size={1}>
-	         			<Card score={score} />
-	         			<Card score={score} />
-	         			<Card score={score} />
-	         		</Col>
-	         		</CardStyle>
-	         	</Row>
+          	<Grid>
+          		<Row>
+
+          		  <CardStyle>
+
+          			   <Col size={1}>
+
+                      <CardImg>
+  	          			    <Card icon={icon}/>
+                      </CardImg>
+
+      	          		<CardImg>
+                        <Card icon={icon}/>
+                      </CardImg>
+
+      	          		<CardImg>
+                        <Card icon={icon}/>
+                      </CardImg>
+
+  	           		  </Col>
+
+                </CardStyle>
+
+  	           	<CardStyle>		
+          			 <Col size={1}>
+  	          			<Card name ={name} />
+  	          			<Card name ={name} />
+  	          			<Card name ={name} />
+  	           	 </Col>
+  	           	</CardStyle>
+
+  	           	<CardStyle>	
+  	           		<Col size={1}>
+    	         			<Card score={score} />
+    	         			<Card score={score} />
+    	         			<Card score={score} />
+  	         		  </Col>
+  	         		</CardStyle>
+  	         	</Row>
 	    	</Grid>
-        </div>
-      )
+      </Container>
+    
+      </React.Fragment>      )
     }
 }
 
 ReactDOM.render(
     <App />,
     document.getElementById('root')
+
 );
