@@ -53,3 +53,27 @@ function joinAsHost(name){
         socket.send(encoded);
     });
 }
+
+/**
+ * Function to send a message to the server that the user
+ * wants to join an exisitng lobby
+ * @param {*} name - name of the user wanting to join
+ * @param {*} gamecode - the lobby unique identifier
+ */
+function joinExistingLobby(name,gamecode){
+    //Create the message
+    baseCommand=buildMessage(NAME,name);
+    var JoinExistingLobbyCommand=buildMessage(JOIN,gamecode,baseCommand);
+
+    baseCommand=JoinExistingLobbyCommand;
+
+    //Send throught the websocket
+    console.log(JoinExistingLobbyCommand);
+    var encoded=encodeURI(JoinExistingLobbyCommand);
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log("got here");
+        socket.send(encoded);
+    });
+}
