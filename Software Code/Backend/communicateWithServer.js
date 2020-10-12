@@ -32,3 +32,24 @@ function buildMessage(command, value="", existingCommand=""){
 
     return finishedCommand;
 }
+
+/**
+ * Function to send a message to the server that the user
+ * wants to create a lobby and join as the host
+ * @param {*} name - name of the user
+ */
+function joinAsHost(name){
+    //Create the message
+    baseCommand=buildMessage(NAME,name);
+    var JoinServerCommand=buildMessage(HOST,"",baseCommand);
+
+    //Send throught the websocket
+    console.log(JoinServerCommand);
+    var encoded=encodeURI(JoinServerCommand);
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log("got here");
+        socket.send(encoded);
+    });
+}
