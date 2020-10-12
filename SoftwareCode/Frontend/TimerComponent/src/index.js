@@ -9,10 +9,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color:  #7E549F;
     font-family: 'Passion One', cursive;
-    overflow: hidden;
-    text-align: center;
-    font: 50px;
-  }
 `;
 
 export const Grid = styled.div`
@@ -85,6 +81,9 @@ render() {
                     <Col size={1}>
                     </Col>
                     <Col size={1}>
+        
+                        <div className = "countdown"> {//code to decrement//
+        }</div>
                     </Col>
                 </Row>
             </Grid>
@@ -113,7 +112,6 @@ export var Timer = ({ width, percent, status }) => {
 
         <div className="progress" style={{ width: `${value}px` }}>
 
-                        <div className = "countdown"> {15}</div>
 
 
 </div>
