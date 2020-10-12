@@ -115,3 +115,22 @@ function sendScore(score){
         socket.send(encoded);
     });
 }
+
+/**
+ * Function to quit the game
+ */
+function quitGame(){
+
+    var QuitGameCommand=buildMessage(QUIT,"",baseCommand);
+
+
+    //Send throught the websocket
+    console.log(QuitGameCommand);
+    var encoded=encodeURI(QuitGameCommand);
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log("got here");
+        socket.send(encoded);
+    });
+}
