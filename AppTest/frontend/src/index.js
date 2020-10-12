@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import logo from './images/logo.svg';
+import logo from './assets/logo.svg';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
 //import UI components
-import { Leaderboard } from './components/Leaderboard';
-import { QuestionsAnswers } from './components/QuestionAnswer';
-import { Timer } from './components/Timer';
+import Leaderboard from './components/Leaderboard';
+import QuestionsAnswers from './components/QuestionsAnswers';
+import Timer from './components/Timer';
 
 export const Grid = styled.div``;
 export const Row = styled.div`display: flex;`;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components'
-import dogicon from './assets/doggo.png'
+import dogicon from '../assets/doggo.png'
 
 
 const GlobalStyle = createGlobalStyle`
@@ -114,7 +114,7 @@ class Leaderboard extends React.Component {
         this.state = {
             name: "PLAYER 1",
             score: "200",
-           	icon: require('./assets/doggo.png'),
+           	icon: require('../assets/doggo.png'),
         };
 
     }
