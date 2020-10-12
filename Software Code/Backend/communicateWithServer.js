@@ -96,3 +96,22 @@ function chatInLobby(message){
         socket.send(encoded);
     });
 }
+
+/**
+ * Function to send a chat message within the lobby
+ * @param {*} score - the updated score
+ */
+function sendScore(score){
+
+    var SendScoreCommand=buildMessage(SCORE,score,baseCommand);
+
+    //Send throught the websocket
+    console.log(SendScoreCommand);
+    var encoded=encodeURI(SendChatCommSendScoreCommandand);
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log("got here");
+        socket.send(encoded);
+    });
+}
