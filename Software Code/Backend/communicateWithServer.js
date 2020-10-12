@@ -77,3 +77,22 @@ function joinExistingLobby(name,gamecode){
         socket.send(encoded);
     });
 }
+
+/**
+ * Function to send a chat message within the lobby
+ * @param {*} message - the message that will be displayed in the chat
+ */
+function chatInLobby(message){
+
+    var SendChatCommand=buildMessage(CHAT,message,baseCommand);
+
+    //Send throught the websocket
+    console.log(SendChatCommand);
+    var encoded=encodeURI(SendChatCommand);
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log("got here");
+        socket.send(encoded);
+    });
+}
