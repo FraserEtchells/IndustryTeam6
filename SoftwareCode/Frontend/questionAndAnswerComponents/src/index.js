@@ -55,64 +55,47 @@ export const Col = styled.div`
 
 // button width used to be 400px but changed to percentage so it resizes
 
-const Button1 = styled.button`
+const Button = styled.button`
   @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-    font-family: 'Passion One', cursive;
+  font-family: 'Passion One', cursive;
 
-  background: #FB836F; // orange
   color: white;
   border: none;
   width: 50%;
   height: 200px;
   font-size: 20px;
+`;
+
+const Button1 = styled(Button)`
+  background: #FB836F; // orange
+
   margin-top: 10px;
   margin-bottom: 5px;
   margin-left: 0px;
   margin-right: 5px;
   `;
 
-const Button2 = styled.button`
-  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-    font-family: 'Passion One', cursive;
-
+const Button2 = styled(Button)`
   background: #4E937A; // green
-  color: white;
-  border: none;
-  width: 50%;
-  height: 200px;
-  font-size: 20px;
+
   margin-top: 10px;
   margin-bottom: 5px;
   margin-left: 5px;
   margin-right: 0px;
   `;
 
-const Button3 = styled.button`
-  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-    font-family: 'Passion One', cursive;
-
+const Button3 = styled(Button)`
   background: #E3B538; // yellow
-  color: white;
-  border: none;
-  width: 50%;
-  height: 200px;
-  font-size: 20px;
+
   margin-top: 5px;
   margin-bottom: 10px;
   margin-left: 0px;
   margin-right: 5px;
   `;
 
-const Button4 = styled.button`
-  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-    font-family: 'Passion One', cursive;
-
+const Button4 = styled(Button)`
   background: #C1549C; // pink
-  color: white;
-  border: none;
-  width: 50%;
-  height: 200px;
-  font-size: 20px;
+
   margin-top: 5px;
   margin-bottom: 10px;
   margin-left: 5px;
