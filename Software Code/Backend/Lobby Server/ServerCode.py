@@ -10,27 +10,58 @@ import re
 import types
 import random
 import string
+import logging
+import asyncio
+import websockets
+from websockets import WebSocketServerProtocol
 from pprint import pprint
 platform.node()
 HEADERSIZE = 10
 
-#List of Clients each item in list is a class of user
 Lobbies = {}
-#Selector for socket
-selector = selectors.DefaultSelector()
-#Setting up the socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#Bindinf the ip address of the server to the socket
-s.bind(("localhost", 5555))
+
+class Server:
+    clients = set()
+    async def register(self, ws: WebSocketServerProtocol) -> None:
+        self.clients.add(ws)
+        logging.info(f'{ws.remote_address} connects.')
+        message = ''
+        print("await message")
+        message = await ws.recv()
+        print(message)
+        User(ws, message)
+        #await ws.send("CONFIRM: ")
+        
+    #This is for the buffer accepting the connection
+    async def unregister(self, ws:WebSocketServerProtocol) -> None:
+        self.clients.remove(ws)
+        logging.info(f'{ws.remote_address} disconnects.')
+
+    async def send_to_clients(self, message: str) -> None:
+        if self.clients:
+            await asyncio.wait([client.send(message) for client in self.clients])  
+
+    async def ws_handler(self, ws: WebSocketServerProtocol, uri: str) -> None:
+        await self.register(ws)
+        try:
+            await self.distribute(ws)
+        finally:
+            await self.unregister(ws)
+
+    async def distribute(self, ws: WebSocketServerProtocol) -> None:
+        async for message in ws:
+            await self.send_to_clients(message)
+    
+
 
 #The class of each user which contains the socket they connect with, their ip and port, their nickname, their username and what channels they are part of
 class User:
     #The Varibles of the users
-    def __init__(self, socket, address):
+    def __init__(self, socket, message):
         #Users Socket
         self.sock = socket
         #Users address
-        self.addr = address
+        self.message = message
         #Users username
         self.username = ''
         #What channels the user is part of
@@ -43,11 +74,15 @@ class User:
     def successfulConnect(self):
         while True:
             uDetails = ""
+            stuff = self.message
             #Reads in the line from the user which starts with CAP LS 302
-            stuff = self.sock.recv(1024).decode()
+            #self.sock.send(acceptConn.encode())
+            #stuff = self.sock.recv(1024).decode()
+
             #if hexchat sends it all in 1 line including username and nickname it will enter this IF
-            if 'JOIN' in stuff:
-                uDetails = stuff
+            if 'JOIN' in self.message:
+                uDetails = self.message
+                print (uDetails)
                 if uDetails:
                     #Removes the non displying characters as well as splitting the string into the 2 lines for user and nickname
                     parse = uDetails.split('\r\n')
@@ -69,8 +104,9 @@ class User:
                     return loggedin
 
             #Else it will read in the next line as these will contain Nickname and username
-            elif 'Host' in stuff:
+            elif 'HOST' in stuff:
                 uDetails = stuff
+                print (stuff)
                 if uDetails:
                     #Removes the non displying characters as well as splitting the string into the 2 lines for user and nickname
                     parse = uDetails.split('\r\n')
@@ -84,6 +120,8 @@ class User:
                         self.lobby = randStr()
                         if self.lobby not in Lobbies:
                             unique = True
+                            mess = "CONFIRM:" + self.userName + self.lobby 
+                            #self.sock.send(mess)
                     Lobbies[self.lobby] = {"Users" : [self]}
                     loggedin = False
                     return loggedin
@@ -92,7 +130,7 @@ class User:
     #This is the main for the user Class
     def main(self):
         #This sends to the terminal that there has been a connection
-        print('Got connection from', self.addr)
+        print('Got connection from')
         #This calls the the successful function and will get back a boolean for whether their nickname is already in use
         loggedin = self.successfulConnect()
         #This is an if statement to check if their nickname was already in use
@@ -189,20 +227,6 @@ def getQuestion(command, p, code):
         i.sock.send(message.encode())
         i.sock.send(question.encode())
 
-#This is for the buffer accepting the connectio
-def accept_wrapper(sock):
-    #This is the socket accepting the connection after listening
-    conn, addr = sock.accept()  
-    #This posts to the terminal
-    print('accepted connection from', addr)
-    #This saves the information from the connection to the variable data
-    data = types.SimpleNamespace(addr=addr, inb=b'', outb=b'')
-    #This Handles the event of reading or writing
-    events = selectors.EVENT_READ | selectors.EVENT_WRITE
-    #This registers the connections with the selector
-    selector.register(conn, events, data=data)
-    #This calls the user class to get the details and set them up on the server
-    User(conn, addr)
 
 def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
@@ -226,7 +250,6 @@ def service_connection(key, mask):
             #if there is no data the socket has closed
             else:
                 point = 0
-                addr = ''
                 code = ''
                 #go through the client
                 for i in Lobbies:
@@ -310,23 +333,8 @@ def service_connection(key, mask):
         #Lobbies[].remove(pointer)
 
 
-#This listens to the socket after it has been set up for a connection
-s.listen(5)
-#Sets up blocking
-s.setblocking(False)
-#reads the information intp the selector buffer
-selector.register(s, selectors.EVENT_READ, data=None)
-
-#Runs constantly
-while True:
-    #gets the events from the buffer
-    events = selector.select(timeout=None)
-    #loops through all the evets that have happened
-    for key, mask in events:
-        #if there is noting in the data
-        if key.data is None:
-            #calls to connect to the socket
-            accept_wrapper(key.fileobj)
-        else:
-            #handles the data and events that have happened
-            service_connection(key, mask)
+server = Server()
+start_server = websockets.serve(server.ws_handler, "localhost", 5555)
+loop = asyncio.get_event_loop()
+loop.run_until_complete(start_server)
+loop.run_forever()
