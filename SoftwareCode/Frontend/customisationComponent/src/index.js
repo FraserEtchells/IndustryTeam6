@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
 
-
-
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
   body {
@@ -20,40 +18,36 @@ const GlobalStyle = createGlobalStyle`
 export const Row = styled.div`
   display: flex;
 
-  justifyContent:center;
-    alignItems: center;
-    padding: 7px;
+  justifycontent: center;
+  alignitems: center;
+  padding: 7px;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h1``;
 
-`;
-
- var IconPicker = styled.div`
-
-  background: white;
+var IconPicker = styled.div`
+  background: ${(props) => (props.background ? props.background : "white")};
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 50px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 50%
-
+  border-radius: 50%;
 `;
-const ColourHead =  styled.div`
 
-  background-color: #422D53;
-  color: #C3B0D3;
-   width: 100%;
+const ColourHead = styled.div`
+  background-color: #422d53;
+  color: #c3b0d3;
+  width: 100%;
   height: 40px;
   font-size: 30px;
   text-align: center;
   border-radius: 5px 5px 0 0;
-    margin: 0;
+  margin: 0;
   padding-bottom: 15px;
   position: relative;
   top: -40px;
@@ -62,217 +56,209 @@ const ColourHead =  styled.div`
 const ColourHeader = () => {
   return (
     <ColourHead>
-        <h2>PLAYER CUSTOMISATION</h2>
+      <h2>PLAYER CUSTOMISATION</h2>
     </ColourHead>
-  )
-}
+  );
+};
 
 export const Container = styled.div`
- display: block;
-  background-color: #CAB1DE; // lilac
-  justifyContent: center;
-  alignItems: center;
+  display: block;
+  background-color: #cab1de; // lilac
+  justifycontent: center;
+  alignitems: center;
   margin: 5px;
   text-align: center;
-  height:300px;
+  height: 300px;
   width: 500px;
 `;
 
 const RedBtn = styled.button`
-  
-   background: #C41111; // red
+  background: #c41111; // red
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 50%
-  `;
-
-  const BlueBtn = styled.button`
-
-  background: #132ED0; // blue
-  border: none;
-  color: #7E549F;
-  padding: 22px;
-  text-align: center;
-  alignItems: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 50%
-  `;
-
- const GreenBtn = styled.button`
-
-   background: #15A642; // green
-  border: none;
-  color: #7E549F;
-  padding: 22px;
-  text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
- const PinkBtn = styled.button`
-
-  background: #EC54B9; // pink
+const BlueBtn = styled.button`
+  background: #132ed0; // blue
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+`;
+
+const GreenBtn = styled.button`
+  background: #15a642; // green
+  border: none;
+  color: #7e549f;
+  padding: 22px;
+  text-align: center;
+  alignitems: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+`;
+
+const PinkBtn = styled.button`
+  background: #ec54b9; // pink
+  border: none;
+  color: #7e549f;
+  padding: 22px;
+  text-align: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
-  const OrangeBtn = styled.button`
-  background: #EE7D0D; // orange
+const OrangeBtn = styled.button`
+  background: #ee7d0d; // orange
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
-  const YellowBtn = styled.button`
-
-  background: #EDED54; // yellow
+const YellowBtn = styled.button`
+  background: #eded54; // yellow
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
-  const GreyBtn = styled.button`
-    background: #3F474E; // grey
+const GreyBtn = styled.button`
+  background: #3f474e; // grey
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
-
+`;
 
 const WhiteBtn = styled.button`
-  
-background: white; // white
+  background: white; // white
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
-  const PurpleBtn = styled.button`
-  background: #6B2FBA; // purple
+const PurpleBtn = styled.button`
+  background: #6b2fba; // purple
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
+`;
 
-  const CyanBtn = styled.button`
-  
-  background: #50F5D0; // white
+const CyanBtn = styled.button`
+  background: #50f5d0; // white
   border: none;
-  color: #7E549F;
+  color: #7e549f;
   padding: 22px;
   text-align: center;
-  alignItems: center;
+  alignitems: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
-  `;
-
+`;
 
 class App extends React.Component {
+  constructor() {
+    super();
 
-	constructor(){
+    this.state = {
+      bgColor: ""
+    };
+  }
 
-		super();
-
-		this.state = {
-
-			bgColour: ""
-		};
-	}
-
-	changeColour = () => {
-     	this.setState({bgColour: "red"});
-   
-  	}
-	 
+  changeColour = (color) => {
+    this.setState({ bgColor: color });
+  };
 
   render() {
     return (
-    <React.Fragment>
-    <GlobalStyle/>
-    <Container>
+      <React.Fragment>
+        <GlobalStyle />
+        <Container>
+          <ColourHeader />
 
-    	<ColourHeader />
-
-    	<IconPicker style={{background: this.state.bgColour}}/>
-    	<Row>
-    		 <RedBtn onClick={this.changeColour}/> <BlueBtn/> <GreenBtn/> <PinkBtn/> <OrangeBtn/> <YellowBtn/> <GreyBtn/> <WhiteBtn/> <PurpleBtn/> <CyanBtn/> 
-    	</Row>
-    </Container>
-
-    </React.Fragment>
+          <IconPicker background={this.state.bgColor} />
+          <Row>
+            <RedBtn onClick={() => this.changeColour("#c41111")} />{" "}
+            <BlueBtn onClick={() => this.changeColour("#132ed0")} />{" "}
+            <GreenBtn onClick={() => this.changeColour("#15A642")} />{" "}
+            <PinkBtn onClick={() => this.changeColour("#EC54B9")} />{" "}
+            <OrangeBtn onClick={() => this.changeColour("#EE7D0D")} />{" "}
+            <YellowBtn onClick={() => this.changeColour("#EDED54")} />{" "}
+            <GreyBtn onClick={() => this.changeColour("#3F474E")} /> {" "}
+            <WhiteBtn onClick={() => this.changeColour("#FFFFFF")} />{" "}
+            <PurpleBtn onClick={() => this.changeColour("#6B2FBA")} />{" "}
+             <CyanBtn onClick={() => this.changeColour("#50F5D0")} />{" "}
+          </Row>
+        </Container>
+      </React.Fragment>
     );
   }
 }
-
 
 ReactDOM.render(
     <App />,
     document.getElementById('root')
 
-);
+)
