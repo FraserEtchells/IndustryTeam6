@@ -4,20 +4,22 @@ import logo from './images/logo.svg';
 import styled from 'styled-components';
 import {createGlobalStyle} from 'styled-components';
 
-export const Grid = styled.div``;
+export const Grid = styled.div`
+  background-color: #7E549F;
+`;
 export const Row = styled.div`display: flex;`;
 export const Col = styled.div`flex: ${(props) => props.size};`;;
 
 export const Button = styled.button`
   float: right;
   background-color: Transparent;
-  font-size: 36px;
+  font-size: 1.5em;
   font-family: 'Passion One', cursive;
   color: white;
   border: none;
-  padding: 12px;
-  margin-right: 20px;
-  margin-top: 7px;
+  padding: 10%;
+  margin-right: 7%;
+  margin-top: 8.5%;
 
   :hover {
     text-decoration: underline;
@@ -27,20 +29,20 @@ export const Button = styled.button`
 export const HeaderContainer = styled.div`
   color:#E266AC;
   font-family: 'Passion One', cursive;
-  font-size: 25px;
+  font-size: 1.5em;
   position: relative;
   
 `;
 
 export const Title = styled.h1`
   position: relative;
-  top: -24px;
+  top: -23%;
 `;
 
 export const Logo = styled.img`
   margin: 0.1em;
-  width:70px;
-  height:70px;
+  width:3em;
+  height:3em;
   float: left;
 `;
 
