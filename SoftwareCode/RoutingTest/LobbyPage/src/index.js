@@ -7,6 +7,7 @@ import { createGlobalStyle } from 'styled-components';
 //import UI components
 import Customisation from './components/Customisation';
 import Form from './components/HostForm';
+import PlayerList from './components/PlayerList';
 //import MainMenu from './components/MainMenu';
 
 
@@ -26,7 +27,7 @@ export const Row = styled.div`
   padding: 4em;
   padding: 4em;
 	position: relative;
-	left: 20%;
+	left: 10%;
 	top: 30%;
 `;
 
@@ -40,6 +41,8 @@ const LobbyPage = () => {
        	<Form/>
 
     	<Customisation/>
+
+      <PlayerList/>
       
     </Row>
     </React.Fragment>
