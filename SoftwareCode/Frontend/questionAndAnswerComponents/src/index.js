@@ -64,6 +64,7 @@ const Button = styled.button`
   width: 50%;
   height: 200px;
   font-size: 20px;
+  outline: none;
 `;
 
 const Button1 = styled(Button)`
