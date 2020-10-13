@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Passion One', cursive;
     overflow: hidden;
     text-align: center;
-    font: 50px;
     color: #df67a7;
   }
 `;
@@ -23,9 +22,8 @@ export const Grid = styled.div`
 
 export const Row = styled.div`
   display: block;
-
   justifyContent:center;
-    alignItems: center;
+  alignItems: center;
 `;
 
 const Button = styled.button`
@@ -34,34 +32,48 @@ const Button = styled.button`
 
   color: white;
   border: none;
-  height: 60px;
-  font-size: 20px;
-  margin: 5px;
+  height: 3.5em;
+  font-size: 1.5em;
+  margin: 0.3em;
   border-radius: 12px;
   outline: none;
 `;
 
 const Button1 = styled(Button)`
   background: #FB836F; // orange
-  width: 15%;
-  `;
+  width: 27%;
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 const Button2 = styled(Button)`
   background: #4E937A; // green
-  width: 25%;
-  `;
+  width: 27%;
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 const Button3 = styled(Button)`
   background: #E3B538; // yellow
-  width: 17.5%;
-  `;
+  width: 27%;
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 const Logo = styled.img`
   background-image: url(../assets/logo.svg);
   margin: 0.1em;
-  width:70px;
-  height:70px;
-  margin: 0 auto;
+  width:8em;
+  height:8em;
+  margin-top: 2%;
+`;
+
+const Name = styled.h1`
+  font-size: 4.5em;
+  margin-top: -0.5%;
 `;
 
 class LogoForMenu extends React.Component {
@@ -77,7 +89,7 @@ class LogoForMenu extends React.Component {
 
 //  background-color: #7E549F;
 
-class App extends React.Component {
+class MainMenu extends React.Component {
   state = {
 
   };
@@ -91,7 +103,7 @@ class App extends React.Component {
     <div>
       {/* Logo is an actual React component */}
       <Logo src={logo}  className="App-logo"  alt="Logo"/>
-      <h1 className="App-title" src={GlobalStyle}>Quizstars</h1>
+      <Name className="App-title" src={GlobalStyle}>QUIZSTAR</Name>
     </div>
 
       <Grid>
@@ -113,9 +125,9 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default MainMenu;
 
 ReactDOM.render(
-    <App />,
+    <MainMenu />,
     document.getElementById('root')
 );
