@@ -41,7 +41,7 @@ export const progress = styled.div`
     rgba(210, 0, 160, 0.4332107843137255) 100%
   );
 
-  height: 20px;
+  height: 2rem;
   transition: 1s linear;
   transition-delay: 0s;
   border-radius: 2rem;
@@ -59,69 +59,34 @@ export const countdown = styled.div `
     font-size: 24pt;
 `;
 
-class TimerComponent extends React.Component {
-    state = {
-
-        percent: 1425
-
-
-
-    };
-updateProgress = (field, val) => {
-    this.setState({ [field]: val });
-};
-
-render() {
-    return (
-        <React.Fragment>
-        <GlobalStyle/>
-        <div className="App">
-        <div className="div">
-            <Grid>
-                <Row>
-                    <Col size={10}>
-                        <Timer width= 'auto' percent={this.state.percent} />
-                    </Col>
-                    <Col size={1}>
-                    </Col>
-                    <Col size={1}>
-                    </Col>
-                </Row>
-            </Grid>
-        </div>
-        </div>
-                </React.Fragment>
-
-
-    );
+export default function Timer() {
+    
+  const [timer, setTimer] = React.useState(15);
+    
+  const id =React.useRef(null);
+    
+  const clear=()=>{
+  window.clearInterval(id.current)
 }
+  
+  React.useEffect(()=>{
+     id.current=window.setInterval(()=>{
+      setTimer((time)=>time-1)},1000)
+      
+    return ()=>clear();
+  },[])
+
+  React.useEffect(()=>{
+    if(timer===0){
+      clear()
+    }
+
+  },[timer])
+
+
+  return (
+    <div className="countdown">
+        <div className = "countdown"> {timer} </div>
+    </div>
+  );
 }
-
-export var Timer = ({ width, percent, status }) => {
-    const [value, setValue] = React.useState(1425);
-
-    React.useEffect(() => {
-        //setValue(percent * width);
-        value > 0 && setTimeout(() => setValue(value - (percent/15)), 1000);
-    }, [value]);
-
-
-    return (
-        <div className={"progressComp"}>
-        <h1 className="percent-number">{status}</h1>
-        <div className="progress-div" style={{ width: width }}>
-
-        <div className="progress" style={{ width: `${value}px` }}>
-
-                        <div className = "countdown"> {15}</div>
-
-
-</div>
-</div>
-</div>
-);
-
-}
-
-
-export default TimerComponent;
