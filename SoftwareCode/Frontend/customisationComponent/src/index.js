@@ -29,9 +29,9 @@ export const Title = styled.h1`
 
 `;
 
- const IconPicker = styled.div`
+ var IconPicker = styled.div`
 
-  background: white; // green
+  background: white;
   border: none;
   color: #7E549F;
   padding: 50px;
@@ -78,7 +78,7 @@ export const Container = styled.div`
   width: 500px;
 `;
 
-const Button1 = styled.button`
+const RedBtn = styled.button`
   
    background: #C41111; // red
   border: none;
@@ -94,7 +94,7 @@ const Button1 = styled.button`
   border-radius: 50%
   `;
 
-  const Button2 = styled.button`
+  const BlueBtn = styled.button`
 
   background: #132ED0; // blue
   border: none;
@@ -110,7 +110,7 @@ const Button1 = styled.button`
   border-radius: 50%
   `;
 
- const Button3 = styled.button`
+ const GreenBtn = styled.button`
 
    background: #15A642; // green
   border: none;
@@ -126,7 +126,7 @@ const Button1 = styled.button`
   border-radius: 50%;
   `;
 
- const Button4 = styled.button`
+ const PinkBtn = styled.button`
 
   background: #EC54B9; // pink
   border: none;
@@ -141,7 +141,7 @@ const Button1 = styled.button`
   border-radius: 50%;
   `;
 
-  const Button5 = styled.button`
+  const OrangeBtn = styled.button`
   background: #EE7D0D; // orange
   border: none;
   color: #7E549F;
@@ -155,7 +155,7 @@ const Button1 = styled.button`
   border-radius: 50%;
   `;
 
-  const Button6 = styled.button`
+  const YellowBtn = styled.button`
 
   background: #EDED54; // yellow
   border: none;
@@ -170,7 +170,7 @@ const Button1 = styled.button`
   border-radius: 50%;
   `;
 
-  const Button7 = styled.button`
+  const GreyBtn = styled.button`
     background: #3F474E; // grey
   border: none;
   color: #7E549F;
@@ -185,7 +185,7 @@ const Button1 = styled.button`
   `;
 
 
-const Button8 = styled.button`
+const WhiteBtn = styled.button`
   
 background: white; // white
   border: none;
@@ -201,7 +201,7 @@ background: white; // white
   border-radius: 50%;
   `;
 
-  const Button9 = styled.button`
+  const PurpleBtn = styled.button`
   background: #6B2FBA; // purple
   border: none;
   color: #7E549F;
@@ -216,7 +216,7 @@ background: white; // white
   border-radius: 50%;
   `;
 
-  const Button10 = styled.button`
+  const CyanBtn = styled.button`
   
   background: #50F5D0; // white
   border: none;
@@ -234,9 +234,22 @@ background: white; // white
 
 
 class App extends React.Component {
-  state = {
 
-  };
+	constructor(){
+
+		super();
+
+		this.state = {
+
+			bgColour: ""
+		};
+	}
+
+	changeColour = () => {
+     	this.setState({bgColour: "red"});
+   
+  	}
+	 
 
   render() {
     return (
@@ -246,8 +259,10 @@ class App extends React.Component {
 
     	<ColourHeader />
 
-    	<IconPicker/>
-    	<Row> <Button1/> <Button2/> <Button3/> <Button4/> <Button5/> <Button6/> <Button7/> <Button8/> <Button9/> <Button10/></Row>
+    	<IconPicker style={{background: this.state.bgColour}}/>
+    	<Row>
+    		 <RedBtn onClick={this.changeColour}/> <BlueBtn/> <GreenBtn/> <PinkBtn/> <OrangeBtn/> <YellowBtn/> <GreyBtn/> <WhiteBtn/> <PurpleBtn/> <CyanBtn/> 
+    	</Row>
     </Container>
 
     </React.Fragment>
