@@ -36,6 +36,7 @@ const Button = styled.button`
   font-size: 20px;
   margin: 5px;
   border-radius: 12px;
+  outline: none;
 `;
 
 const Button1 = styled(Button)`
