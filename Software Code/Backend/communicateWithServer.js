@@ -1,3 +1,10 @@
+//Connect to the websocket
+//Need to test
+const port=5555;
+const host= "//localhost:"
+//const socket = new WebSocket(`ws:${host}${port}`);
+var socket = new WebSocket('ws://localhost:5555');
+
 //Standard commands recognised by the servers
 const NAME= "NAME";
 const JOIN= "JOIN";
