@@ -23,7 +23,7 @@ export const Button = styled.button`
   float: right;
   background-color: Transparent;
   font-size: 36px;
-  font-family: 'Passion One', cursive;
+font-family:'PassionOne';
   color: white;
   border: none;
   padding: 12px;
@@ -37,7 +37,7 @@ export const Button = styled.button`
 
 export const HeaderContainer = styled.div`
   color:#E266AC;
-  font-family: 'Passion One', cursive;
+  font-family:'PassionOne'; 
   font-size: 25px;
   position: relative;
   
@@ -46,6 +46,7 @@ export const HeaderContainer = styled.div`
 export const Title = styled.h1`
   position: relative;
   top: -24px;
+  font-family:'PassionOne';
 `;
 
 export const Logo = styled.img`

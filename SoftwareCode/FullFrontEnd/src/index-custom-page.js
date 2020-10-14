@@ -32,6 +32,7 @@ export const Row = styled.div`
 	position: relative;
 	left: 20%;
 	top: 30%;
+  font-family:'PassionOne';
 `;
 
 const LobbyPage = () => {
