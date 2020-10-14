@@ -55,7 +55,7 @@ const ColourHead = styled.div`
 const ColourHeader = () => {
   return (
     <ColourHead>
-      <h2>PLAYERS CUSTOMISATIONS</h2>
+      <h2>PLAYER CUSTOMISATION</h2>
     </ColourHead>
   );
 };
