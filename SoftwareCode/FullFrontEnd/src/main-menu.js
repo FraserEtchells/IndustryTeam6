@@ -108,7 +108,7 @@ class MainMenu extends React.Component {
         </Row>
         <Row>
           <Link to='./index-custom-page'>
-            <Button2>CREATE MULTIPLAYER GAME</Button2>
+            <Button2>HOST MULTIPLAYER GAME</Button2>
           </Link>
         </Row>
         <Row>
