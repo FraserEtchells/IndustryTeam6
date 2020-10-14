@@ -12,6 +12,8 @@ import random
 import string
 import logging
 import asyncio
+import json
+from bson.json_util import dumps, loads
 import websockets
 from websockets import WebSocketServerProtocol
 from pprint import pprint
@@ -214,24 +216,25 @@ def getQuestion():
     # print the IDs generated
     pprint(questIDs)
 
-    # depreciated - create a list to hold the questions & get them from database
-    # tempQuests = []
-    # tempQuests = my_col.find({}, {"_id":0})
-    # pprint(tempQuests)
-
     # create a list to hold questions & get from database, transfer the questions we want (according to IDs generated) into a new list & get rid of original
     randQuests = []
     for ID in questIDs:
         quest = list(my_col.find({"id" : int(ID)}, {"_id":0}))
-        randQuests.append(quest)
-        # randQuests.append(tempQuests[ID])
-    # del tempQuests
+        tempQuest = dumps(quest)
+        randQuests.append(tempQuest)
 
     # print the questions that have been selected
     for quest in randQuests:
         pprint(quest)
 
     return randQuests
+
+
+async def sendQuestion(command, p, code):
+    questToSend = p.questions.pop()
+    message = "QUESTION:" + questToSend
+    await p.sock.send(message)
+
 
 def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
@@ -269,8 +272,8 @@ async def service_connection(socket, command):
             #calls the function for leaving the channel
             score(command, pointer, code)
         elif "QUESTION" in command:
-            #calls the function for leaving the channel
-            getQuestion(command, pointer, code)
+            #calls the function to send a question
+            sendQuestion(command, pointer, code)
             #checks that the socket hasnt closed
         elif "GETLEADERBOARD" in command:
             #calls the function for leaving the channel
