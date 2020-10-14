@@ -82,7 +82,7 @@ const Header = () => {
                         <TimerRow>
                             <Col size={1}>
                                 <Timer>
-        
+                                    
                                 </Timer>
                             </Col>
       

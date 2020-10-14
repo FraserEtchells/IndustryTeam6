@@ -15,6 +15,7 @@ import Timer from './components/Timer';
 
 export const Grid = styled.div``;
 export const Row = styled.div`display: flex;`;
+export const TimerRow = styled.div`display: fixed;`;
 export const Col = styled.div`flex: ${(props) => props.size};`;;
 
 export const Button = styled.button`
@@ -72,13 +73,13 @@ const Header = () => {
         <header>
           <Grid>
             <Row>
-              <Col size={0.2}>
-                <Logo src={logo} alt="Logo"/>
-              </Col>
-              <Col size={10}>
-                <Title>QUIZSTAR</Title>
-              </Col>
-              <Col size={1}>
+              <Col size={0}>
+                                <Logo src={logo} alt="Logo"/>
+                            </Col>
+                            <Col size={0}>
+                                <Title>QUIZSTAR</Title>
+                            </Col>
+                            <Col size={1}>
                 <HashRouter>
                   {/* TODO: ADD 'ARE YOU SURE?' POPUP */}
                   <Link to='main-menu'>
@@ -86,21 +87,34 @@ const Header = () => {
                   </Link>
                 </HashRouter>
               </Col>
-            </Row>
-          </Grid>
-        </header>
-      </HeaderContainer>
+                        </Row>
+                        <TimerRow>
+                            <Col size={1}>
+                                <Timer>
+                                    
+                                </Timer>
+                            </Col>
+      
+                        </TimerRow>
+                        <Row>
+                            <Col size = {1}>
+                                <QuestionsAnswers>
+        
+                                </QuestionsAnswers>
+                            </Col>
+                                <Col size = {0.02}>
+                            </Col>
+                            <Col size = {1}>
+                                <Leaderboard>
+        
+                                </Leaderboard>
+                            </Col>
+                        </Row>
 
-      <Timer>
-      </Timer>
-
-      <QuestionsAnswers>
-      </QuestionsAnswers>
-
-      <Leaderboard>
-      </Leaderboard>
-
-    </React.Fragment>
+                    </Grid>
+                </header>
+            </HeaderContainer>
+        </React.Fragment>
   );
 }
 

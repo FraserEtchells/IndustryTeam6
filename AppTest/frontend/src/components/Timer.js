@@ -78,6 +78,7 @@ export default function Timer() {
 
   React.useEffect(()=>{
     if(timer===0){
+        
       clear()
     }
 

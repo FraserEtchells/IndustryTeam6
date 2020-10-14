@@ -43,11 +43,13 @@ const CardStyle = styled.div`
   color: #2A1D34;
   margin: 0; 
 
+  height: 3.57em;
+
 
 `;
 
 const TextStyle = styled.p`
-  margin: 0px 0px;
+  margin: 1rem 1rem 1rem 1rem;
 
 `;
 
@@ -56,21 +58,22 @@ const CardImg = styled.div`
    position: relative;
     top: 15px;
     padding-bottom: 15px;
-
+    padding-left: 15px;
 
 `;
 
 const Leadheader =  styled.div`
-    margin-top: 100px;
+  display: block;
   background-color: #422D53;
+  justifyContent: center;
+  alignItems: center;
   color: #C3B0D3;
-   width: 100%;
-  height: 50px;
+  width: 100%;
+  height: 3.1rem;
   font-size: 45px;
-  text-align: center;
   border-radius: 5px 5px 0 0;
-    margin: 0;
-  padding-bottom: 25px;
+  padding-top: 0.04rem;
+  padding-bottom: 4rem;
 `;
 
 
