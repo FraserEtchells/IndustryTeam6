@@ -71,6 +71,7 @@ class User:
         #What channels the user is part of
         self.lobby = ''
         self.score = 0
+        self.questions = []
         #Call to the main function of the User class
         self.main()              
 
@@ -127,6 +128,7 @@ class User:
                             print(self.lobby)
                             #self.sock.send(mess)
                     Lobbies[self.lobby] = {"Users" : [self]}
+                    self.questions = getQuestion()
                     loggedin = False
                     return loggedin
 
@@ -177,7 +179,7 @@ async def leaderboard(command, p, code):
     for i in Lobbies[code].values():
         i.sock.send(message.encode())
 
-async def getQuestion(command, p, code):
+def getQuestion():
     # connect to MongoDB
     dburi = "mongodb://team6-mongodb:4LITWMsMLAzi1w4rZbuOo0wgaaUlFk0nO3WMj1riXjsnL0rkZqmRgeX0oVnWTHOhlOgr7NX6H97S00pwfgWxlA==@team6-mongodb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@team6-mongodb@"
     client = MongoClient(dburi)
@@ -229,13 +231,7 @@ async def getQuestion(command, p, code):
     for quest in randQuests:
         pprint(quest)
 
-    question = randQuests
-    message = "QUESTIONS"
-
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
-        i.sock.send(question.encode())
-
+    return randQuests
 
 def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
