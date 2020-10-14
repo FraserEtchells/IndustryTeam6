@@ -19,6 +19,7 @@ platform.node()
 HEADERSIZE = 10
 
 Lobbies = {}
+conMessage = ''
 
 class Server:
     clients = set()
@@ -28,9 +29,12 @@ class Server:
         message = ''
         print("await message")
         message = await ws.recv()
-        print(message)
-        User(ws, message)
-        #await ws.send("CONFIRM: ")
+        currUser = User(ws, message)
+        mess = "CONFIRM:" + currUser.userName + ":" + currUser.lobby
+        await ws.send(mess)
+        while True:
+            message = await ws.recv()
+            await service_connection(ws, message)
         
     #This is for the buffer accepting the connection
     async def unregister(self, ws:WebSocketServerProtocol) -> None:
@@ -120,7 +124,7 @@ class User:
                         self.lobby = randStr()
                         if self.lobby not in Lobbies:
                             unique = True
-                            mess = "CONFIRM:" + self.userName + self.lobby 
+                            print(self.lobby)
                             #self.sock.send(mess)
                     Lobbies[self.lobby] = {"Users" : [self]}
                     loggedin = False
@@ -136,19 +140,18 @@ class User:
         #This is an if statement to check if their nickname was already in use
         if loggedin == False:
             print('Welcome')
-            
         else:
             print('Error')        
 
 #Function for a person quitting the server
-def quitting(command, p, code):
+async def quitting(command, p, code):
     #Splits the address to get the ip
     message = 'NAME' + p.Username + ': QUIT \n'
     for i in Lobbies[code].values():
         i.sock.send(message.encode())
 
 #Function for a person quitting the server
-def chat(command, p, code):
+async def chat(command, p, code):
     #Splits the address to get the ip
     pCommand = command.split(":")
     info = pCommand[5]
@@ -159,16 +162,22 @@ def chat(command, p, code):
             i.sock.send(message.encode())
 
 #Function for a person quitting the server
-def score(command, p, code):
+async def score(command, p, code):
     #Splits the address to get the ip
     pCommand = command.split(":")
     score = pCommand[5]
     p.score = score + p.score
-    message = 'NAME' + p.Username + ': SCORE :' + p.score + '\n'
+
+
+#Function for a person quitting the server
+async def leaderboard(command, p, code):
+    message = ''
+    for j in Lobbies[code].values():
+        message = j.username + ":" + j.score + ":"
     for i in Lobbies[code].values():
         i.sock.send(message.encode())
 
-def getQuestion(command, p, code):
+async def getQuestion(command, p, code):
     # connect to MongoDB
     dburi = "mongodb://team6-mongodb:4LITWMsMLAzi1w4rZbuOo0wgaaUlFk0nO3WMj1riXjsnL0rkZqmRgeX0oVnWTHOhlOgr7NX6H97S00pwfgWxlA==@team6-mongodb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@team6-mongodb@"
     client = MongoClient(dburi)
@@ -232,97 +241,44 @@ def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
 
 #This funtions checks for items comming in for any connections
-def service_connection(key, mask):
+async def service_connection(socket, command):
     #This trys encase of errors
     try:
-        #This gets the socket the item was received from
-        sock = key.fileobj
-        #This gets the data the socket is from
-        data = key.data
-        #This checks for something needing to be read in
-        if mask & selectors.EVENT_READ:
-            #this reads in the data from whatever socket
-            recv_data = sock.recv(1024)
-            #This checks theres data after the read
-            if recv_data:
-                #This saves the data as data.outb
-                data.outb += recv_data
-            #if there is no data the socket has closed
-            else:
-                point = 0
-                code = ''
-                #go through the client
-                for i in Lobbies:
-                    for x in i:
-                        #check ip address is of the user
-                        if data.addr == x.addr:
-                            #save where the user we are looking for is
-                            addr = data.addr
-                            point = i
-                            code = x.lobby
-                print('closing connection to', data.addr)
-                #This unregisters the socket with the selector
-                selector.unregister(sock)
-                #Closes the socket
-                sock.close()
-                #Removes the info about them from Clients list
-                Lobbies[code].remove(point)
-        #This is if you want to write to the socket
-        if mask & selectors.EVENT_WRITE:
-            #if there is data
-            if data.outb:
-                pointer = 0
-                addr = ''
-                parse = data.outb.split(":")
-                code = parse[3]
-                #reads through the client list
-                for i in Lobbies[code].values():
-                    #Checks correct address
-                    if data.addr == i.addr:
-                        #saves the address
-                        addr = data.addr
-                        #saves pointer to item in list we are looking for
-                        pointer = i
-                #Prints whatever is received
-                print('echoing', repr(data.outb), 'to', data.addr)
-                i = 0
-                #if we receive pirvate mesaage
-                if "QUIT" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the funtion quitting
-                    quitting(command, pointer, code)
-                    print('closing connection to', data.addr)
-                    #unregisters the socket
-                    selector.unregister(sock)
-                    #closes the socket
-                    pointer.sock.close()
-                    #removes the client info
-                    Lobbies[code].remove(pointer)
-                    i = 1
-                #if we receive a channel join command
-                elif "CHAT" in repr(data.outb):
-                    #decodes command
-                    command = data.outb.decode()
-                    chat(command, pointer, code)
-                #if we receive a leave channel command
-                elif "SCORE" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the function for leaving the channel
-                    score(command, pointer, code)
-                elif "QUESTION" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the function for leaving the channel
-                    getQuestion(command, pointer, code)
-                #checks that the socket hasnt closed
-                if i==0:
-                    #sends item to the sockets
-                    sent = sock.send(data.outb)
-                    #sends the information aswell
-                    data.outb = data.outb[sent:]
-                i=0
+        pointer = 0
+        parse = command.split(":")
+        code = parse[3]
+        #code = parse[3]
+        for i in Lobbies[code].values():
+            #Checks correct address
+            if socket == i.sock:
+                #saves pointer to item in list we are looking for
+                pointer = i
+        #if we receive pirvate mesaage
+        if "QUIT" in command:
+            #calls the funtion quitting
+            quitting(command, pointer, code)
+            print('closing connection to', i.sock)
+            #unregisters the socket
+            #selector.unregister(sock)
+            #closes the socket
+            pointer.sock.close()
+            #removes the client info
+            Lobbies[code]["Users"].remove(pointer)
+            i = 1
+        #if we receive a channel join command
+        elif "CHAT" in command:
+            chat(command, pointer, code)
+        #if we receive a leave channel command
+        elif "SCORE" in command:
+            #calls the function for leaving the channel
+            score(command, pointer, code)
+        elif "QUESTION" in command:
+            #calls the function for leaving the channel
+            getQuestion(command, pointer, code)
+            #checks that the socket hasnt closed
+        elif "GETLEADERBOARD" in command:
+            #calls the function for leaving the channel
+            leaderboard(command, pointer, code)
     #Exception if the socket has an error
     except(socket.error):
         #unregisters socket
