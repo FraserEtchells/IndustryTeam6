@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {createGlobalStyle} from 'styled-components';
-import PassionOne from './fonts/PassionOne.ttf';
+import PassionOne from '../fonts/PassionOne.ttf';
 import {
   HashRouter,
   Link,
@@ -100,7 +100,6 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
       background-color: #7E549F;
-      font-family: 'Passion One', cursive;
       text-align: center;
       align-content: center;
     }
