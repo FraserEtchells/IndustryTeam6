@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Passion One', cursive;
     overflow: hidden;
     text-align: center;
+    font: 50px;
     color: #df67a7;
   }
 `;
@@ -22,8 +23,9 @@ export const Grid = styled.div`
 
 export const Row = styled.div`
   display: block;
+
   justifyContent:center;
-  alignItems: center;
+    alignItems: center;
 `;
 
 const Button = styled.button`
@@ -32,48 +34,34 @@ const Button = styled.button`
 
   color: white;
   border: none;
-  height: 3.5em;
-  font-size: 1.5em;
-  margin: 0.3em;
+  height: 60px;
+  font-size: 20px;
+  margin: 5px;
   border-radius: 12px;
   outline: none;
 `;
 
 const Button1 = styled(Button)`
   background: #FB836F; // orange
-  width: 27%;
-  :hover {
-    text-decoration: underline;
-  }
-`;
+  width: 15%;
+  `;
 
 const Button2 = styled(Button)`
   background: #4E937A; // green
-  width: 27%;
-  :hover {
-    text-decoration: underline;
-  }
-`;
+  width: 25%;
+  `;
 
 const Button3 = styled(Button)`
   background: #E3B538; // yellow
-  width: 27%;
-  :hover {
-    text-decoration: underline;
-  }
-`;
+  width: 17.5%;
+  `;
 
 const Logo = styled.img`
   background-image: url(../assets/logo.svg);
   margin: 0.1em;
-  width:8em;
-  height:8em;
-  margin-top: 2%;
-`;
-
-const Name = styled.h1`
-  font-size: 4.5em;
-  margin-top: -0.5%;
+  width:70px;
+  height:70px;
+  margin: 0 auto;
 `;
 
 class LogoForMenu extends React.Component {
@@ -89,7 +77,7 @@ class LogoForMenu extends React.Component {
 
 //  background-color: #7E549F;
 
-class MainMenu extends React.Component {
+class App extends React.Component {
   state = {
 
   };
@@ -103,7 +91,7 @@ class MainMenu extends React.Component {
     <div>
       {/* Logo is an actual React component */}
       <Logo src={logo}  className="App-logo"  alt="Logo"/>
-      <Name className="App-title" src={GlobalStyle}>QUIZSTAR</Name>
+      <h1 className="App-title" src={GlobalStyle}>Quizstars</h1>
     </div>
 
       <Grid>
@@ -125,9 +113,9 @@ class MainMenu extends React.Component {
   }
 }
 
-export default MainMenu;
+export default App;
 
 ReactDOM.render(
-    <MainMenu />,
+    <App />,
     document.getElementById('root')
 );

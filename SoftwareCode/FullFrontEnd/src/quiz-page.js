@@ -1,25 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import logo from './images/logo.svg';
+import logo from './assets/logo.svg';
 import styled from 'styled-components';
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
+import {
+  HashRouter,
+  Link,
+} from "react-router-dom";
 
-export const Grid = styled.div`
-  background-color: #7E549F;
-`;
+//import UI components
+import Leaderboard from './components/Leaderboard';
+import QuestionsAnswers from './components/QuestionsAnswers';
+import Timer from './components/Timer';
+
+export const Grid = styled.div``;
 export const Row = styled.div`display: flex;`;
 export const Col = styled.div`flex: ${(props) => props.size};`;;
 
 export const Button = styled.button`
   float: right;
   background-color: Transparent;
-  font-size: 1.5em;
+  font-size: 36px;
   font-family: 'Passion One', cursive;
   color: white;
   border: none;
-  padding: 10%;
-  margin-right: 7%;
-  margin-top: 8.5%;
+  padding: 12px;
+  margin-right: 20px;
+  margin-top: 7px;
 
   :hover {
     text-decoration: underline;
@@ -29,20 +36,20 @@ export const Button = styled.button`
 export const HeaderContainer = styled.div`
   color:#E266AC;
   font-family: 'Passion One', cursive;
-  font-size: 1.5em;
+  font-size: 25px;
   position: relative;
   
 `;
 
 export const Title = styled.h1`
   position: relative;
-  top: -23%;
+  top: -24px;
 `;
 
 export const Logo = styled.img`
   margin: 0.1em;
-  width:3em;
-  height:3em;
+  width:70px;
+  height:70px;
   float: left;
 `;
 
@@ -72,17 +79,34 @@ const Header = () => {
                 <Title>QUIZSTAR</Title>
               </Col>
               <Col size={1}>
-                <Button as="button" type="button">EXIT</Button>
+                <HashRouter>
+                  {/* TODO: ADD 'ARE YOU SURE?' POPUP */}
+                  <Link to='main-menu'>
+                    <Button as="button" type="button">EXIT</Button>
+                  </Link>
+                </HashRouter>
               </Col>
             </Row>
           </Grid>
         </header>
       </HeaderContainer>
+
+      <Timer>
+      </Timer>
+
+      <QuestionsAnswers>
+      </QuestionsAnswers>
+
+      <Leaderboard>
+      </Leaderboard>
+
     </React.Fragment>
   );
 }
 
-// ========================================
+
+
+/// ========================================
 
 ReactDOM.render(
   <Header/>,

@@ -1,8 +1,12 @@
 import React from 'react';
+import {
+  HashRouter,
+  Link,
+} from "react-router-dom";
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
-import logo from './logo.svg';
+import logo from './images/logo.svg';
 
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
@@ -37,30 +41,22 @@ const Button = styled.button`
   margin: 0.3em;
   border-radius: 12px;
   outline: none;
-`;
-
-const Button1 = styled(Button)`
-  background: #FB836F; // orange
   width: 27%;
   :hover {
     text-decoration: underline;
   }
+`;
+
+const Button1 = styled(Button)`
+  background: #FB836F; // orange  
 `;
 
 const Button2 = styled(Button)`
   background: #4E937A; // green
-  width: 27%;
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
 const Button3 = styled(Button)`
   background: #E3B538; // yellow
-  width: 27%;
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
 const Logo = styled.img`
@@ -105,18 +101,21 @@ class MainMenu extends React.Component {
       <Logo src={logo}  className="App-logo"  alt="Logo"/>
       <Name className="App-title" src={GlobalStyle}>QUIZSTAR</Name>
     </div>
-
+    <HashRouter>
       <Grid>
         <Row>
           <Button1>PLAY SOLO</Button1>
         </Row>
         <Row>
-          <Button2>CREATE MULTIPLAYER GAME</Button2>
+          <Link to='./index-custom-page'>
+            <Button2>CREATE MULTIPLAYER GAME</Button2>
+          </Link>
         </Row>
         <Row>
           <Button3>JOIN FRIENDS</Button3>
         </Row>
       </Grid>
+      </HashRouter>
 
     </div>
 
