@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import {createGlobalStyle} from 'styled-components';
+import PassionOne from './fonts/PassionOne.ttf';
 import {
   HashRouter,
   Link,
@@ -37,12 +38,12 @@ export const Button = styled.button`
     transform: translateX(-50%);
     background-color: #E266AC;
     font-size: 1.9em;
-    font-family: 'Passion One', cursive;
     color: white;
     border: none;
     padding: 0.5em;
     outline: none;
     border-radius: 0.8em;
+    font-family:'PassionOne';
 
     :hover {
         text-decoration: underline;
@@ -71,7 +72,7 @@ export const TextInput = styled.input`
 export const Label = styled.label`
   color: black;
   opacity: 0.7;
-  font-family: 'Passion One', cursive;
+  font-family:'PassionOne';
   padding-right: 0.3em;
   padding-left: 0.3em;
   text-align: center;
@@ -87,13 +88,16 @@ export const Label = styled.label`
 
 export const Code = styled.p`
     font-size: 5em;
-    font-family: 'Passion One', cursive;
     margin: 0;
     color: #cab1de;
+    font-family:'PassionOne';
 `;
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap')
+     @font-face {
+      font-family: PassionOne;
+      src: url(${PassionOne});
+    }
     body {
       background-color: #7E549F;
       font-family: 'Passion One', cursive;

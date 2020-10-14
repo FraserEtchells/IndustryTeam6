@@ -2,9 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
+import PassionOne from './fonts/PassionOne.ttf';
 
 const GlobalStyle = createGlobalStyle`
- @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+ @font-face {
+    font-family: PassionOne;
+    src: url(${PassionOne});
+  }
   body {
     background-color:  #7E549F;
     font-family: 'Passion One', cursive;
@@ -56,8 +60,7 @@ export const Col = styled.div`
 // button width used to be 400px but changed to percentage so it resizes
 
 const Button = styled.button`
-@import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-    font-family: 'Passion One', cursive;
+    font-family:'PassionOne';
     color: white;
     border: none;
     width: 50%;

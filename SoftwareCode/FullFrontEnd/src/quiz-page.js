@@ -23,7 +23,7 @@ export const Button = styled.button`
   float: right;
   background-color: Transparent;
   font-size: 36px;
-font-family:'PassionOne';
+  font-family:'PassionOne';
   color: white;
   border: none;
   padding: 12px;
@@ -63,7 +63,7 @@ export const HeaderSytle = styled.header`
 const GlobalStyle = createGlobalStyle`
     
     @font-face {
-      font-family: PassionOne;
+      font-family:PassionOne;
       src: url(${PassionOne});
     }
     body {
