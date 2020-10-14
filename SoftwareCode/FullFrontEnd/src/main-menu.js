@@ -7,12 +7,16 @@ import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
 import logo from './images/logo.svg';
+import PassionOne from './fonts/PassionOne.ttf';
 
 const GlobalStyle = createGlobalStyle`
- @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+@font-face {
+    font-family: PassionOne;
+    src: url(${PassionOne});
+  }
   body {
     background-color:  #7E549F;
-    font-family: 'Passion One', cursive;
+    font-family: 'PassionOne';
     overflow: hidden;
     text-align: center;
     color: #df67a7;
@@ -31,9 +35,8 @@ export const Row = styled.div`
 `;
 
 const Button = styled.button`
-  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
-  font-family: 'Passion One', cursive;
-
+  
+  font-family:'PassionOne';
   color: white;
   border: none;
   height: 3.5em;
@@ -70,6 +73,7 @@ const Logo = styled.img`
 const Name = styled.h1`
   font-size: 4.5em;
   margin-top: -0.5%;
+  font-family:'PassionOne';
 `;
 
 class LogoForMenu extends React.Component {

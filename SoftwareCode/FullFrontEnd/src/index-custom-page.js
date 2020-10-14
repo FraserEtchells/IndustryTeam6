@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import logo from './assets/logo.svg';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
-
+import PassionOne from './fonts/PassionOne.ttf';
 
 //import UI components
 import Customisation from './components/Customisation';
@@ -12,10 +12,13 @@ import Form from './components/HostForm';
 
 
 const GlobalStyle = createGlobalStyle`
- @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+ @font-face {
+    font-family: PassionOne;
+    src: url(${PassionOne});
+  }
   body {
     background-color:  #7E549F;
-    font-family: 'Passion One', cursive;
+    font-family: 'PassionOne';
     overflow: hidden;
     text-align: center;
     font: 50px;
