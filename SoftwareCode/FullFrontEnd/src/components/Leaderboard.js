@@ -34,6 +34,8 @@ export const Col = styled.div`
 
 `;
 
+
+
 const CardStyle = styled.div`
 
 	display: table;
@@ -84,14 +86,16 @@ const Container =  styled.div`
 `;
 
 
-
+const Title = styled.h1`
+  margin: 0.1em
+`;
 
 console.log(dogicon);
 
 const LeaderboardHeader = () => {
   return (
     <Leadheader>
-        <h2>LEADERBOARD</h2>
+        <Title>LEADERBOARD</Title>
     </Leadheader>
   )
 }
@@ -107,7 +111,7 @@ class Card extends React.Component {
 }
 class Leaderboard extends React.Component {
 
-    // fires before component is mounted
+    
     constructor(props) {
         
         // makes this refer to this component
