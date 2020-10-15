@@ -12,8 +12,6 @@ import random
 import string
 import logging
 import asyncio
-import json
-from bson.json_util import dumps, loads
 import websockets
 from websockets import WebSocketServerProtocol
 from pprint import pprint
@@ -32,10 +30,11 @@ class Server:
         print("await message")
         message = await ws.recv()
         currUser = User(ws, message)
-        mess = "CONFIRM:" + currUser.userName + ":" + currUser.lobby
+        mess = "CONFIRM:" + currUser.username + ":" + currUser.lobby
         await ws.send(mess)
         while True:
             message = await ws.recv()
+            print(message)
             await service_connection(ws, message)
         
     #This is for the buffer accepting the connection
@@ -92,15 +91,15 @@ class User:
                 print (uDetails)
                 if uDetails:
                     #Removes the non displying characters as well as splitting the string into the 2 lines for user and nickname
-                    parse = uDetails.split('\r\n')
+                    parse = uDetails.split(':')
                     #Splits the command up so we can access the key data of nickname
                     parse1 = parse[0].split(":")
                     #saves the nickname of the Client to their users class variable
-                    self.userName = parse1[1]
+                    self.username = parse[1]
                     #Saves the username of the user as their class variable
                     self.lobby = parse1[3]
                     if self.lobby in Lobbies:
-                        if self.userName in Lobbies[self.lobby].values():
+                        if self.username in Lobbies[self.lobby].values():
                             Lobbies[self.lobby]["Users"].append(self)
                             loggedin = False
                         else:
@@ -120,7 +119,7 @@ class User:
                     #Splits the command up so we can access the key data of nickname
                     parse1 = parse[0].split(":")
                     #saves the nickname of the Client to their users class variable
-                    self.userName = parse1[1]
+                    self.username = parse1[1]
                     #Saves the username of the user as their class variable
                     unique = False
                     while unique == False:
@@ -150,7 +149,7 @@ class User:
 #Function for a person quitting the server
 async def quitting(command, p, code):
     #Splits the address to get the ip
-    message = 'NAME' + p.Username + ': QUIT \n'
+    message = 'NAME' + p.username + ': QUIT \n'
     for i in Lobbies[code].values():
         i.sock.send(message.encode())
 
@@ -170,16 +169,18 @@ async def score(command, p, code):
     #Splits the address to get the ip
     pCommand = command.split(":")
     score = pCommand[5]
-    p.score = score + p.score
+    p.score = int(score) + p.score
 
 
 #Function for a person quitting the server
 async def leaderboard(command, p, code):
     message = ''
     for j in Lobbies[code].values():
-        message = j.username + ":" + j.score + ":"
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
+        for i in j:
+            print(i.username)
+            message = i.username + ":" + str(i.score) + ":"
+    print(message)            
+    await p.sock.send(message.encode())
 
 def getQuestion():
     # connect to MongoDB
@@ -235,7 +236,6 @@ async def sendQuestion(command, p, code):
     message = "QUESTION:" + questToSend
     await p.sock.send(message)
 
-
 def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
 
@@ -246,12 +246,14 @@ async def service_connection(socket, command):
         pointer = 0
         parse = command.split(":")
         code = parse[3]
-        #code = parse[3]
-        for i in Lobbies[code].values():
+        for j in Lobbies[code].values():
+            for i in j:
+                if socket == i.sock:
+                    pointer = i
             #Checks correct address
-            if socket == i.sock:
+            #if socket == i.sock:
                 #saves pointer to item in list we are looking for
-                pointer = i
+                #pointer = i
         #if we receive pirvate mesaage
         if "QUIT" in command:
             #calls the funtion quitting
@@ -260,7 +262,7 @@ async def service_connection(socket, command):
             #unregisters the socket
             #selector.unregister(sock)
             #closes the socket
-            pointer.sock.close()
+            #pointer.sock.close()
             #removes the client info
             Lobbies[code]["Users"].remove(pointer)
             i = 1
@@ -270,14 +272,14 @@ async def service_connection(socket, command):
         #if we receive a leave channel command
         elif "SCORE" in command:
             #calls the function for leaving the channel
-            score(command, pointer, code)
+            await score(command, pointer, code)
         elif "QUESTION" in command:
-            #calls the function to send a question
-            sendQuestion(command, pointer, code)
+            #calls the function for leaving the channel
+            giveQuestion(command, pointer, code)
             #checks that the socket hasnt closed
         elif "GETLEADERBOARD" in command:
             #calls the function for leaving the channel
-            leaderboard(command, pointer, code)
+            await leaderboard(command, pointer, code)
     #Exception if the socket has an error
     except(socket.error):
         #unregisters socket
