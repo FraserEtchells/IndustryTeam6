@@ -111,7 +111,9 @@ class MainMenu extends React.Component {
     <HashRouter>
       <Grid>
         <Row>
+        <Link to="./solo-view">
           <Button1>PLAY SOLO</Button1>
+          </Link>
         </Row>
         <Row>
           <Link to='./index-custom-page'>

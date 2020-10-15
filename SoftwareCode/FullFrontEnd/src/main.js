@@ -7,6 +7,7 @@ import {
   import MainMenu from "./main-menu";
   import CustomisationPage from "./index-custom-page";
   import QuizPage from "./quiz-page";
+  import SoloView from "./solo-view";
   import styled from 'styled-components';
 
 class Main extends Component {
@@ -23,6 +24,7 @@ class Main extends Component {
                     <Route exact path="/" component={MainMenu}/>
                     <Route path="/index-custom-page" component={CustomisationPage}/>
                     <Route path="/quiz-page" component={QuizPage}/>
+                    <Route path="/solo-view" component={SoloView}/>
                 </div>
             </div>
         </HashRouter>
