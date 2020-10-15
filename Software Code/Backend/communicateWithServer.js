@@ -1,11 +1,12 @@
+
 //Quiz Client to the server
 //Melvin Abraham
+
 
 //Connect to the websocket
 const port=5555;
 const host= "//localhost:"
 const socket = new WebSocket(`ws:${host}${port}`);
-
 
 //Standard commands recognised by the servers
 const NAME= "NAME";
