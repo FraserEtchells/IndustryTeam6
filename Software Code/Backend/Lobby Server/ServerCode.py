@@ -269,7 +269,7 @@ async def service_connection(socket, command):
             i = 1
         #if we receive a channel join command
         elif "CHAT" in command:
-            chat(command, pointer, code)
+            await chat(command, pointer, code)
         #if we receive a leave channel command
         elif "SCORE" in command:
             #calls the function for leaving the channel
