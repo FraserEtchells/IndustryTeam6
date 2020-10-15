@@ -39,8 +39,9 @@ const Button = styled.button`
   font-family:'PassionOne';
   color: white;
   border: none;
-  height: 3.5em;
-  font-size: 1.5em;
+  min-height: calc(0.11*100vh);
+  // height: 3.5em;
+  font-size: calc(0.015*100vw);
   margin: 0.3em;
   border-radius: 12px;
   outline: none;
@@ -65,13 +66,15 @@ const Button3 = styled(Button)`
 const Logo = styled.img`
   background-image: url(../assets/logo.svg);
   margin: 0.1em;
-  width:8em;
-  height:8em;
-  margin-top: 2%;
+  // width:8em;
+  width: calc(0.1*100vw);
+  // height:8em;
+  height: calc(0.1*100vw);
+  margin-top: -1%;
 `;
 
 const Name = styled.h1`
-  font-size: 4.5em;
+  font-size: calc(0.05*100vw);
   margin-top: -0.5%;
   font-family:'PassionOne';
 `;
