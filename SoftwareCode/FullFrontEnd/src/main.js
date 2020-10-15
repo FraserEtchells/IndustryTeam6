@@ -4,7 +4,7 @@ import {
     NavLink,
     HashRouter
   } from "react-router-dom";
-  import MainMenu from "./";
+  import MainMenu from "./main-menu";
   import CustomisationPage from "./index-custom-page";
   import QuizPage from "./quiz-page";
   import styled from 'styled-components';
