@@ -4,7 +4,7 @@ import {
     NavLink,
     HashRouter
   } from "react-router-dom";
-  import MainMenu from "./main-menu";
+  import MainMenu from "./";
   import CustomisationPage from "./index-custom-page";
   import QuizPage from "./quiz-page";
   import styled from 'styled-components';
@@ -14,13 +14,13 @@ class Main extends Component {
     return (
         <HashRouter>
             <div>
-                <ul className="header">
+                {/* <ul className="header">
                     <li><NavLink to="/main-menu">Home</NavLink></li>
                     <li><NavLink to="/index-custom-page">Customisation</NavLink></li>
                     <li><NavLink to="/quiz-page">Quiz</NavLink></li>
-                </ul>
+                </ul> */}
                 <div className="content">
-                    <Route exact path="/main-menu" component={MainMenu}/>
+                    <Route exact path="/" component={MainMenu}/>
                     <Route path="/index-custom-page" component={CustomisationPage}/>
                     <Route path="/quiz-page" component={QuizPage}/>
                 </div>
