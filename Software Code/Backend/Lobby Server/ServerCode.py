@@ -14,6 +14,8 @@ import logging
 import asyncio
 import websockets
 from websockets import WebSocketServerProtocol
+import json
+from bson.json_util import dumps, loads
 from pprint import pprint
 platform.node()
 HEADERSIZE = 10
@@ -150,8 +152,8 @@ class User:
 async def quitting(command, p, code):
     #Splits the address to get the ip
     message = 'NAME' + p.username + ': QUIT \n'
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
+    #for i in Lobbies[code].values():
+        #await i.sock.send(message.encode())
 
 #Function for a person quitting the server
 async def chat(command, p, code):
@@ -159,10 +161,9 @@ async def chat(command, p, code):
     pCommand = command.split(":")
     info = pCommand[5]
     message = 'NAME' + p.username + ': CHAT :' + info + '\n'
-    for i in Lobbies[code].values():
-        #Preps the message to say the bot has left
-        if (p.Username != i.Username):
-            i.sock.send(message.encode())
+    for j in Lobbies[code].values():
+        for i in j:
+            await i.sock.send(message)
 
 #Function for a person quitting the server
 async def score(command, p, code):
@@ -180,7 +181,7 @@ async def leaderboard(command, p, code):
             print(i.username)
             message = i.username + ":" + str(i.score) + ":"
     print(message)            
-    await p.sock.send(message.encode())
+    await p.sock.send(message)
 
 def getQuestion():
     # connect to MongoDB
@@ -275,7 +276,7 @@ async def service_connection(socket, command):
             await score(command, pointer, code)
         elif "QUESTION" in command:
             #calls the function for leaving the channel
-            giveQuestion(command, pointer, code)
+            await sendQuestion(command, pointer, code)
             #checks that the socket hasnt closed
         elif "GETLEADERBOARD" in command:
             #calls the function for leaving the channel
@@ -285,7 +286,7 @@ async def service_connection(socket, command):
         #unregisters socket
         selector.unregister(sock)
         #closes the socket
-        pointer.sock.close()
+        #pointer.sock.close()
         #deleters users info
         #Lobbies[].remove(pointer)
 
