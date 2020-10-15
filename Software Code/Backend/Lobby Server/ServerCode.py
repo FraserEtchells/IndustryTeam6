@@ -10,32 +10,71 @@ import re
 import types
 import random
 import string
+import logging
+import asyncio
+import websockets
+from websockets import WebSocketServerProtocol
+import json
+from bson.json_util import dumps, loads
 from pprint import pprint
 platform.node()
 HEADERSIZE = 10
 
-#List of Clients each item in list is a class of user
 Lobbies = {}
-#Selector for socket
-selector = selectors.DefaultSelector()
-#Setting up the socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#Bindinf the ip address of the server to the socket
-s.bind(("localhost", 5555))
+conMessage = ''
+
+class Server:
+    clients = set()
+    async def register(self, ws: WebSocketServerProtocol) -> None:
+        self.clients.add(ws)
+        logging.info(f'{ws.remote_address} connects.')
+        message = ''
+        print("await message")
+        message = await ws.recv()
+        currUser = User(ws, message)
+        mess = "CONFIRM:" + currUser.username + ":" + currUser.lobby
+        await ws.send(mess)
+        while True:
+            message = await ws.recv()
+            print(message)
+            await service_connection(ws, message)
+        
+    #This is for the buffer accepting the connection
+    async def unregister(self, ws:WebSocketServerProtocol) -> None:
+        self.clients.remove(ws)
+        logging.info(f'{ws.remote_address} disconnects.')
+
+    async def send_to_clients(self, message: str) -> None:
+        if self.clients:
+            await asyncio.wait([client.send(message) for client in self.clients])  
+
+    async def ws_handler(self, ws: WebSocketServerProtocol, uri: str) -> None:
+        await self.register(ws)
+        try:
+            await self.distribute(ws)
+        finally:
+            await self.unregister(ws)
+
+    async def distribute(self, ws: WebSocketServerProtocol) -> None:
+        async for message in ws:
+            await self.send_to_clients(message)
+    
+
 
 #The class of each user which contains the socket they connect with, their ip and port, their nickname, their username and what channels they are part of
 class User:
     #The Varibles of the users
-    def __init__(self, socket, address):
+    def __init__(self, socket, message):
         #Users Socket
         self.sock = socket
         #Users address
-        self.addr = address
+        self.message = message
         #Users username
         self.username = ''
         #What channels the user is part of
         self.lobby = ''
         self.score = 0
+        self.questions = []
         #Call to the main function of the User class
         self.main()              
 
@@ -43,22 +82,26 @@ class User:
     def successfulConnect(self):
         while True:
             uDetails = ""
+            stuff = self.message
             #Reads in the line from the user which starts with CAP LS 302
-            stuff = self.sock.recv(1024).decode()
+            #self.sock.send(acceptConn.encode())
+            #stuff = self.sock.recv(1024).decode()
+
             #if hexchat sends it all in 1 line including username and nickname it will enter this IF
-            if 'JOIN' in stuff:
-                uDetails = stuff
+            if 'JOIN' in self.message:
+                uDetails = self.message
+                print (uDetails)
                 if uDetails:
                     #Removes the non displying characters as well as splitting the string into the 2 lines for user and nickname
-                    parse = uDetails.split('\r\n')
+                    parse = uDetails.split(':')
                     #Splits the command up so we can access the key data of nickname
                     parse1 = parse[0].split(":")
                     #saves the nickname of the Client to their users class variable
-                    self.userName = parse1[1]
+                    self.username = parse[1]
                     #Saves the username of the user as their class variable
                     self.lobby = parse1[3]
                     if self.lobby in Lobbies:
-                        if self.userName in Lobbies[self.lobby].values():
+                        if self.username in Lobbies[self.lobby].values():
                             Lobbies[self.lobby]["Users"].append(self)
                             loggedin = False
                         else:
@@ -69,22 +112,26 @@ class User:
                     return loggedin
 
             #Else it will read in the next line as these will contain Nickname and username
-            elif 'Host' in stuff:
+            elif 'HOST' in stuff:
                 uDetails = stuff
+                print (stuff)
                 if uDetails:
                     #Removes the non displying characters as well as splitting the string into the 2 lines for user and nickname
                     parse = uDetails.split('\r\n')
                     #Splits the command up so we can access the key data of nickname
                     parse1 = parse[0].split(":")
                     #saves the nickname of the Client to their users class variable
-                    self.userName = parse1[1]
+                    self.username = parse1[1]
                     #Saves the username of the user as their class variable
                     unique = False
                     while unique == False:
                         self.lobby = randStr()
                         if self.lobby not in Lobbies:
                             unique = True
+                            print(self.lobby)
+                            #self.sock.send(mess)
                     Lobbies[self.lobby] = {"Users" : [self]}
+                    self.questions = getQuestion()
                     loggedin = False
                     return loggedin
 
@@ -92,45 +139,51 @@ class User:
     #This is the main for the user Class
     def main(self):
         #This sends to the terminal that there has been a connection
-        print('Got connection from', self.addr)
+        print('Got connection from')
         #This calls the the successful function and will get back a boolean for whether their nickname is already in use
         loggedin = self.successfulConnect()
         #This is an if statement to check if their nickname was already in use
         if loggedin == False:
             print('Welcome')
-            
         else:
             print('Error')        
 
 #Function for a person quitting the server
-def quitting(command, p, code):
+async def quitting(command, p, code):
     #Splits the address to get the ip
-    message = 'NAME' + p.Username + ': QUIT \n'
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
+    message = 'NAME' + p.username + ': QUIT \n'
+    #for i in Lobbies[code].values():
+        #await i.sock.send(message.encode())
 
 #Function for a person quitting the server
-def chat(command, p, code):
+async def chat(command, p, code):
     #Splits the address to get the ip
     pCommand = command.split(":")
     info = pCommand[5]
     message = 'NAME' + p.username + ': CHAT :' + info + '\n'
-    for i in Lobbies[code].values():
-        #Preps the message to say the bot has left
-        if (p.Username != i.Username):
-            i.sock.send(message.encode())
+    for j in Lobbies[code].values():
+        for i in j:
+            await i.sock.send(message)
 
 #Function for a person quitting the server
-def score(command, p, code):
+async def score(command, p, code):
     #Splits the address to get the ip
     pCommand = command.split(":")
     score = pCommand[5]
-    p.score = score + p.score
-    message = 'NAME' + p.Username + ': SCORE :' + p.score + '\n'
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
+    p.score = int(score) + p.score
 
-def getQuestion(command, p, code):
+
+#Function for a person quitting the server
+async def leaderboard(command, p, code):
+    message = ''
+    for j in Lobbies[code].values():
+        for i in j:
+            print(i.username)
+            message = i.username + ":" + str(i.score) + ":"
+    print(message)            
+    await p.sock.send(message)
+
+def getQuestion():
     # connect to MongoDB
     dburi = "mongodb://team6-mongodb:4LITWMsMLAzi1w4rZbuOo0wgaaUlFk0nO3WMj1riXjsnL0rkZqmRgeX0oVnWTHOhlOgr7NX6H97S00pwfgWxlA==@team6-mongodb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@team6-mongodb@"
     client = MongoClient(dburi)
@@ -165,168 +218,81 @@ def getQuestion(command, p, code):
     # print the IDs generated
     pprint(questIDs)
 
-    # depreciated - create a list to hold the questions & get them from database
-    # tempQuests = []
-    # tempQuests = my_col.find({}, {"_id":0})
-    # pprint(tempQuests)
-
     # create a list to hold questions & get from database, transfer the questions we want (according to IDs generated) into a new list & get rid of original
     randQuests = []
     for ID in questIDs:
         quest = list(my_col.find({"id" : int(ID)}, {"_id":0}))
-        randQuests.append(quest)
-        # randQuests.append(tempQuests[ID])
-    # del tempQuests
+        tempQuest = dumps(quest)
+        randQuests.append(tempQuest)
 
     # print the questions that have been selected
     for quest in randQuests:
         pprint(quest)
 
-    question = randQuests
-    message = "QUESTIONS"
+    return randQuests
 
-    for i in Lobbies[code].values():
-        i.sock.send(message.encode())
-        i.sock.send(question.encode())
 
-#This is for the buffer accepting the connectio
-def accept_wrapper(sock):
-    #This is the socket accepting the connection after listening
-    conn, addr = sock.accept()  
-    #This posts to the terminal
-    print('accepted connection from', addr)
-    #This saves the information from the connection to the variable data
-    data = types.SimpleNamespace(addr=addr, inb=b'', outb=b'')
-    #This Handles the event of reading or writing
-    events = selectors.EVENT_READ | selectors.EVENT_WRITE
-    #This registers the connections with the selector
-    selector.register(conn, events, data=data)
-    #This calls the user class to get the details and set them up on the server
-    User(conn, addr)
+async def sendQuestion(command, p, code):
+    questToSend = p.questions.pop()
+    message = "QUESTION:" + questToSend
+    await p.sock.send(message)
 
 def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 	return ''.join(random.choice(chars) for _ in range(N))
 
 #This funtions checks for items comming in for any connections
-def service_connection(key, mask):
+async def service_connection(socket, command):
     #This trys encase of errors
     try:
-        #This gets the socket the item was received from
-        sock = key.fileobj
-        #This gets the data the socket is from
-        data = key.data
-        #This checks for something needing to be read in
-        if mask & selectors.EVENT_READ:
-            #this reads in the data from whatever socket
-            recv_data = sock.recv(1024)
-            #This checks theres data after the read
-            if recv_data:
-                #This saves the data as data.outb
-                data.outb += recv_data
-            #if there is no data the socket has closed
-            else:
-                point = 0
-                addr = ''
-                code = ''
-                #go through the client
-                for i in Lobbies:
-                    for x in i:
-                        #check ip address is of the user
-                        if data.addr == x.addr:
-                            #save where the user we are looking for is
-                            addr = data.addr
-                            point = i
-                            code = x.lobby
-                print('closing connection to', data.addr)
-                #This unregisters the socket with the selector
-                selector.unregister(sock)
-                #Closes the socket
-                sock.close()
-                #Removes the info about them from Clients list
-                Lobbies[code].remove(point)
-        #This is if you want to write to the socket
-        if mask & selectors.EVENT_WRITE:
-            #if there is data
-            if data.outb:
-                pointer = 0
-                addr = ''
-                parse = data.outb.split(":")
-                code = parse[3]
-                #reads through the client list
-                for i in Lobbies[code].values():
-                    #Checks correct address
-                    if data.addr == i.addr:
-                        #saves the address
-                        addr = data.addr
-                        #saves pointer to item in list we are looking for
-                        pointer = i
-                #Prints whatever is received
-                print('echoing', repr(data.outb), 'to', data.addr)
-                i = 0
-                #if we receive pirvate mesaage
-                if "QUIT" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the funtion quitting
-                    quitting(command, pointer, code)
-                    print('closing connection to', data.addr)
-                    #unregisters the socket
-                    selector.unregister(sock)
-                    #closes the socket
-                    pointer.sock.close()
-                    #removes the client info
-                    Lobbies[code].remove(pointer)
-                    i = 1
-                #if we receive a channel join command
-                elif "CHAT" in repr(data.outb):
-                    #decodes command
-                    command = data.outb.decode()
-                    chat(command, pointer, code)
-                #if we receive a leave channel command
-                elif "SCORE" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the function for leaving the channel
-                    score(command, pointer, code)
-                elif "QUESTION" in repr(data.outb):
-                    #decodes the command
-                    command = data.outb.decode()
-                    #calls the function for leaving the channel
-                    getQuestion(command, pointer, code)
-                #checks that the socket hasnt closed
-                if i==0:
-                    #sends item to the sockets
-                    sent = sock.send(data.outb)
-                    #sends the information aswell
-                    data.outb = data.outb[sent:]
-                i=0
+        pointer = 0
+        parse = command.split(":")
+        code = parse[3]
+        for j in Lobbies[code].values():
+            for i in j:
+                if socket == i.sock:
+                    pointer = i
+            #Checks correct address
+            #if socket == i.sock:
+                #saves pointer to item in list we are looking for
+                #pointer = i
+        #if we receive pirvate mesaage
+        if "QUIT" in command:
+            #calls the funtion quitting
+            quitting(command, pointer, code)
+            print('closing connection to', i.sock)
+            #unregisters the socket
+            #selector.unregister(sock)
+            #closes the socket
+            #pointer.sock.close()
+            #removes the client info
+            Lobbies[code]["Users"].remove(pointer)
+            i = 1
+        #if we receive a channel join command
+        elif "CHAT" in command:
+            await chat(command, pointer, code)
+        #if we receive a leave channel command
+        elif "SCORE" in command:
+            #calls the function for leaving the channel
+            await score(command, pointer, code)
+        elif "QUESTION" in command:
+            #calls the function for leaving the channel
+            await sendQuestion(command, pointer, code)
+            #checks that the socket hasnt closed
+        elif "GETLEADERBOARD" in command:
+            #calls the function for leaving the channel
+            await leaderboard(command, pointer, code)
     #Exception if the socket has an error
     except(socket.error):
         #unregisters socket
         selector.unregister(sock)
         #closes the socket
-        pointer.sock.close()
+        #pointer.sock.close()
         #deleters users info
         #Lobbies[].remove(pointer)
 
 
-#This listens to the socket after it has been set up for a connection
-s.listen(5)
-#Sets up blocking
-s.setblocking(False)
-#reads the information intp the selector buffer
-selector.register(s, selectors.EVENT_READ, data=None)
-
-#Runs constantly
-while True:
-    #gets the events from the buffer
-    events = selector.select(timeout=None)
-    #loops through all the evets that have happened
-    for key, mask in events:
-        #if there is noting in the data
-        if key.data is None:
-            #calls to connect to the socket
-            accept_wrapper(key.fileobj)
-        else:
-            #handles the data and events that have happened
-            service_connection(key, mask)
+server = Server()
+start_server = websockets.serve(server.ws_handler, "localhost", 5555)
+loop = asyncio.get_event_loop()
+loop.run_until_complete(start_server)
+loop.run_forever()

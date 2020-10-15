@@ -1,3 +1,13 @@
+
+//Quiz Client to the server
+//Melvin Abraham
+
+
+//Connect to the websocket
+const port=5555;
+const host= "//localhost:"
+const socket = new WebSocket(`ws:${host}${port}`);
+
 //Standard commands recognised by the servers
 const NAME= "NAME";
 const JOIN= "JOIN";
@@ -7,9 +17,42 @@ const CHAT= "CHAT";
 const POINTS= "POINTS";
 const QUIT= "QUIT";
 const SCORE="SCORE";
+const GETQUESTIONS = "GETQUESTIONS";
+const GETLEADERBOARD= "GETLEADERBOARD";
+var gamecode="";
+
+
 
 //Information about the player
 var baseCommand= "";
+
+
+//High level function callers
+// async function JoinAsHost(name) {
+//     const data = await joinAsHostLowLevel(name);
+//     // Your logic goes here.
+//     return data
+//     }
+// console.log(getQuestions());
+// console.log(getLeaderboard());
+
+
+// joinAsHost("Melvin").then(data => {
+//     //....do more things with data....
+//     console.log(data);
+//     console.log(gamecode);
+// });
+
+
+// joinAsHost("Melvin");
+
+
+// setTimeout(function(){ 
+//             console.log(`gamecode: ${gamecode}`)
+//          }, 3000);
+
+
+
 
 /**
  * Funtion to created the commands understood by the python server
@@ -38,21 +81,54 @@ function buildMessage(command, value="", existingCommand=""){
  * wants to create a lobby and join as the host
  * @param {*} name - name of the user
  */
-function joinAsHost(name){
+async function joinAsHost(name){
     //Create the message
     baseCommand=buildMessage(NAME,name);
     var JoinServerCommand=buildMessage(HOST,"",baseCommand);
 
     //Send throught the websocket
-    console.log(JoinServerCommand);
+    //console.log(JoinServerCommand);
     var encoded=encodeURI(JoinServerCommand);
-
     // Connection opened
+
+
     socket.addEventListener('open', function (event) {
-        console.log("got here");
+        console.log("got here: HOST");
         socket.send(encoded);
+    
     });
+
+    socket.onmessage = function(event) {
+        console.log("WebSocket message received:", event.data);
+        //Get the reply from the server
+        var arr=event.data.split(":");
+        console.log(`arr: ${arr}`);
+        gamecode=arr[arr.length-1];
+
+        //Recive the gamecode
+        baseCommand=  baseCommand+`:CODE:${gamecode}`;
+        console.log(gamecode);
+        console.log(baseCommand);
+        alert(gamecode);
+        //socket.close();
+        return gamecode
+      };
+
 }
+
+
+// function getGameCode() {
+//     console.log(`from function ${gamecode}`);
+//     setTimeout(function(){ 
+//      return gamecode
+//     }, 3000);
+// }
+
+// const getGameCode = () => {
+//     joinAsHost("melvin").then((a) => {
+//       console.log(a);
+//     });
+//   };
 
 /**
  * Function to send a message to the server that the user
@@ -65,7 +141,7 @@ function joinExistingLobby(name,gamecode){
     baseCommand=buildMessage(NAME,name);
     var JoinExistingLobbyCommand=buildMessage(JOIN,gamecode,baseCommand);
 
-    baseCommand=JoinExistingLobbyCommand;
+    baseCommand=JoinExistingLobbyCommand
 
     //Send throught the websocket
     console.log(JoinExistingLobbyCommand);
@@ -91,10 +167,10 @@ function chatInLobby(message){
     var encoded=encodeURI(SendChatCommand);
 
     // Connection opened
-    socket.addEventListener('open', function (event) {
+    //socket.addEventListener('open', function (event) {
         console.log("got here");
         socket.send(encoded);
-    });
+    //});
 }
 
 /**
@@ -107,13 +183,13 @@ function sendScore(score){
 
     //Send throught the websocket
     console.log(SendScoreCommand);
-    var encoded=encodeURI(SendChatCommSendScoreCommandand);
+    var encoded=encodeURI(SendScoreCommand);
 
     // Connection opened
-    socket.addEventListener('open', function (event) {
+    //socket.addEventListener('open', function (event) {
         console.log("got here");
         socket.send(encoded);
-    });
+    //});
 }
 
 /**
@@ -121,7 +197,7 @@ function sendScore(score){
  */
 function quitGame(){
 
-    var QuitGameCommand=buildMessage(QUIT,"",baseCommand);
+    var QuitGameCommand=buildMessage("QUIT","",baseCommand);
 
 
     //Send throught the websocket
@@ -129,8 +205,65 @@ function quitGame(){
     var encoded=encodeURI(QuitGameCommand);
 
     // Connection opened
-    socket.addEventListener('open', function (event) {
+    //socket.addEventListener('open', function (event) {
         console.log("got here");
         socket.send(encoded);
-    });
+    //});
+}
+
+
+function getLeaderboard(){
+    var GetLeaderboardCommand= buildMessage(GETLEADERBOARD,"",baseCommand);
+
+    //Send throught the websocket
+    console.log(GetLeaderboardCommand);
+    var encoded=encodeURI(GetLeaderboardCommand);
+
+    // Connection opened
+    //socket.addEventListener('open', function (event) {
+    console.log("got here LEADERBOARD");
+    socket.send(encoded);
+    //});
+
+    socket.onmessage = function(event) {
+        console.log("WebSocket message received:", event.data);
+        //Get the reply from the server
+       // var reply= "player1:5:player2:7:player3:123";
+       var leaderboard={};
+        var arr=event.data.split(":");
+        
+        //Convert the reply into a Javascript object
+        for (let index = 0; index < arr.length; index+=2) {
+                leaderboard[arr[index]]=arr[index+1];
+        }
+        console.log(leaderboard);
+        return leaderboard;
+      };
+
+}
+
+function getQuestions(){
+    console.log(baseCommand);
+    var GetQuestionsCommand= buildMessage("QUESTION","",baseCommand);
+    console.log(GetQuestionsCommand);
+    
+    //Send throught the websocket
+    //console.log(GetQuestionsCommand);
+    var encoded=encodeURI(GetQuestionsCommand);
+
+    // Connection opened
+    //socket.addEventListener('open', function (event) {
+        console.log("got here QUESTIONS");
+        socket.send(encoded);
+    //});
+
+    socket.onmessage = function(event) {
+        console.log(event.data)
+        var arr=event.data.substr(9);
+        let value=JSON.parse(arr); 
+        return value[0]
+      };
+
+
+    
 }
