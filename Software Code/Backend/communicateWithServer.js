@@ -27,19 +27,6 @@ var gamecode="";
 var baseCommand= "";
 
 
-joinAsHost("Ross");
-
-//Call get leaderboard in 5 seconds
-setTimeout(function(){
-    sendScore(5);
-}, 5000);
-
-//Call get leaderboard in 5 seconds
-setTimeout(function(){
-    getQuestions();
-}, 10000);
-
-
 //High level function callers
 // async function JoinAsHost(name) {
 //     const data = await joinAsHostLowLevel(name);
