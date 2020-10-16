@@ -33,7 +33,7 @@ export const Grid = styled.div`
 //so if it's a short one it leaves a gap for the line underneath
 export const QuestionRow = styled.div`
   display: block;
-  background-color: #E1D3E4; // lilac
+  background-color: #DCC6E0; // lilac
   justifyContent: center;
   alignItems: center;
   margin:;
@@ -79,19 +79,19 @@ const Button = styled.button`
 `;
 
 const Button1 = styled(Button)` 
-  background: #FB836F; // orange
+  background: #98FB98; // green
   `;
 
 const Button2 = styled(Button)`
-  background: #4E937A; // green  
+  background: #89C4F4; // blue  
   `;
 
 const Button3 = styled(Button)`
-  background: #E3B538; // yellow
+  background: #DDA0DD; // pink
   `;
 
 const Button4 = styled(Button)`
-  background: #C1549C; // pink
+  background: #F4A460; // orange
   `;
 
 // button border and colour if we decide to use it
