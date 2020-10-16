@@ -28,20 +28,34 @@ class Server:
     async def register(self, ws: WebSocketServerProtocol) -> None:
         self.clients.add(ws)
         logging.info(f'{ws.remote_address} connects.')
+        print(ws.remote_address)
         message = ''
         print("await message")
         message = await ws.recv()
         currUser = User(ws, message)
-        mess = "CONFIRM:" + currUser.username + ":" + currUser.lobby
-        await ws.send(mess)
-        while True:
-            message = await ws.recv()
-            print(message)
-            await service_connection(ws, message)
+        if currUser.logged == True:
+            mess = "CONFIRM:" + currUser.username + ":" + currUser.lobby
+            try:
+                await ws.send(mess)        
+                while True:
+                    message = await ws.recv()
+                    print(message)
+                    await service_connection(ws, message)
+            except:
+                await ws.close()
+                for j in Lobbies.values():
+                    for i in j:
+                        print(i)
+                        if i.sock == ws:
+                            j.remove(i)
+        else:
+            mess = "Error:" + currUser.username + ":IN_USE"
+            await ws.send(mess)
+            
         
     #This is for the buffer accepting the connection
     async def unregister(self, ws:WebSocketServerProtocol) -> None:
-        self.clients.remove(ws)
+        #self.clients.remove(ws)
         logging.info(f'{ws.remote_address} disconnects.')
 
     async def send_to_clients(self, message: str) -> None:
@@ -72,6 +86,7 @@ class User:
         #Users username
         self.username = ''
         #What channels the user is part of
+        self.logged = False
         self.lobby = ''
         self.score = 0
         self.questions = []
@@ -102,7 +117,10 @@ class User:
                     self.lobby = parse1[3]
                     if self.lobby in Lobbies:
                         if self.username in Lobbies[self.lobby].values():
+                            #Lobbies[self.lobby]
+                            self.questions = Lobbies[self.lobby]["Users"][0].questions
                             Lobbies[self.lobby]["Users"].append(self)
+                            self.logged = True
                             loggedin = False
                         else:
                             loggedin = True
@@ -129,6 +147,7 @@ class User:
                         if self.lobby not in Lobbies:
                             unique = True
                             print(self.lobby)
+                            self.logged = True
                             #self.sock.send(mess)
                     Lobbies[self.lobby] = {"Users" : [self]}
                     self.questions = getQuestion()
@@ -152,8 +171,12 @@ class User:
 async def quitting(command, p, code):
     #Splits the address to get the ip
     message = 'NAME' + p.username + ': QUIT \n'
-    #for i in Lobbies[code].values():
-        #await i.sock.send(message.encode())
+    for j in Lobbies[code].values():
+        for i in j:
+            await i.sock.send(message)
+            if i.sock == p.sock:
+                await j.sock.close()
+                Lobbies[code]["Users"].remove(p)
 
 #Function for a person quitting the server
 async def chat(command, p, code):
@@ -243,7 +266,6 @@ def randStr(chars = string.ascii_uppercase + string.digits, N=6):
 #This funtions checks for items comming in for any connections
 async def service_connection(socket, command):
     #This trys encase of errors
-    try:
         pointer = 0
         parse = command.split(":")
         code = parse[3]
@@ -251,22 +273,11 @@ async def service_connection(socket, command):
             for i in j:
                 if socket == i.sock:
                     pointer = i
-            #Checks correct address
-            #if socket == i.sock:
-                #saves pointer to item in list we are looking for
-                #pointer = i
         #if we receive pirvate mesaage
         if "QUIT" in command:
             #calls the funtion quitting
             quitting(command, pointer, code)
             print('closing connection to', i.sock)
-            #unregisters the socket
-            #selector.unregister(sock)
-            #closes the socket
-            #pointer.sock.close()
-            #removes the client info
-            Lobbies[code]["Users"].remove(pointer)
-            i = 1
         #if we receive a channel join command
         elif "CHAT" in command:
             await chat(command, pointer, code)
@@ -280,16 +291,7 @@ async def service_connection(socket, command):
             #checks that the socket hasnt closed
         elif "GETLEADERBOARD" in command:
             #calls the function for leaving the channel
-            await leaderboard(command, pointer, code)
-    #Exception if the socket has an error
-    except(socket.error):
-        #unregisters socket
-        selector.unregister(sock)
-        #closes the socket
-        #pointer.sock.close()
-        #deleters users info
-        #Lobbies[].remove(pointer)
-
+            await leaderboard(command, pointer, code) 
 
 server = Server()
 start_server = websockets.serve(server.ws_handler, "localhost", 5555)
