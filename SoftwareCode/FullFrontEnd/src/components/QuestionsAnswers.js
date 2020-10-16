@@ -22,6 +22,8 @@ const GlobalStyle = createGlobalStyle`
 export const Grid = styled.div`
   background-color: #714C8A; // purple
   width: 940px;
+  position: relative;
+  left: 5em;
 `;
 
 
