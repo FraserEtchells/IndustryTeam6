@@ -108,7 +108,7 @@ class Answers extends React.Component {
     return (
     <React.Fragment>
     <GlobalStyle/>
-    <div className="App">
+    <div className="App" style="position: relative;left: 5em;">
 
       <Grid>
         <QuestionRow>
