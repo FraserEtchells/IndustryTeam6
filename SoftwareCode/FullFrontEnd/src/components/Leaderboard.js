@@ -22,7 +22,7 @@ export const Grid = styled.div`
 export const Row = styled.div`
 
 	display: flex;
-	background-color: #c3b0d3;
+	background-color: #E1D3E4;
 	display: block ruby;
   margin: 0;
 `;
@@ -41,7 +41,7 @@ const CardStyle = styled.div`
 	display: table;
 	padding-right: 30px;
   font-size: 35px;
-  background-color: #C3B0D3;
+  background-color: #E1D3E4;
   color: #2A1D34;
   margin: 0; 
 

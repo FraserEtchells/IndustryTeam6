@@ -33,7 +33,7 @@ export const Grid = styled.div`
 //so if it's a short one it leaves a gap for the line underneath
 export const QuestionRow = styled.div`
   display: block;
-  background-color: #CAB1DE; // lilac
+  background-color: #E1D3E4; // lilac
   justifyContent: center;
   alignItems: center;
   margin:;
