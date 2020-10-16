@@ -29,7 +29,7 @@ export const Button = styled.button`
   background-color: Transparent;
   font-size: 36px;
   font-family:'PassionOne';
-  color: white;
+  color: #e266ac;
   border: none;
   padding: 12px;
   margin-right: 20px;
