@@ -16,7 +16,12 @@ import Timer from './components/Timer';
 
 export const Grid = styled.div``;
 export const Row = styled.div`display: flex;`;
-export const TimerRow = styled.div`display: fixed;`;
+export const TimerRow = styled.div`
+display: fixed;
+position: relative;
+left: 6.7em;
+font-size: 3.5em;
+`;
 export const Col = styled.div`flex: ${(props) => props.size};`;;
 
 export const Button = styled.button`
