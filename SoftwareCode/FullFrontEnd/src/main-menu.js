@@ -37,7 +37,7 @@ export const Row = styled.div`
 const Button = styled.button`
   
   font-family:'PassionOne';
-  color: white;
+  color: #714C8A;
   border: none;
   min-height: calc(0.11*100vh);
   // height: 3.5em;
@@ -52,15 +52,15 @@ const Button = styled.button`
 `;
 
 const Button1 = styled(Button)`
-  background: #FB836F; // orange  
+  background: #F4A460; // orange  
 `;
 
 const Button2 = styled(Button)`
-  background: #4E937A; // green
+  background: #98FB98; // green
 `;
 
 const Button3 = styled(Button)`
-  background: #E3B538; // yellow
+  background: #89C4F4; // blue
 `;
 
 const Logo = styled.img`
