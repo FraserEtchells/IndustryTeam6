@@ -29,7 +29,7 @@ export const Div = styled.div`
   border: solid 0.6em;
   border-color: #422d53;
   border-style: dotted;
-  height: calc(0.35*100vh);
+  height: calc(0.40*100vh);
   width: calc(0.2*100vw);
   // min-height: calc(0.2*100vh);
 `;
