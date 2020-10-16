@@ -7,7 +7,7 @@ import logo from './assets/logo.svg';
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
   body {
-    background-color:  #7E549F;
+    background-color:  #714C8A;
     font-family: 'Passion One', cursive;
     overflow: hidden;
     text-align: center;
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export const Grid = styled.div`
-  background-color: #7E549F; // purple
+  background-color: #714C8A; // purple
   width: ;
 `;
 

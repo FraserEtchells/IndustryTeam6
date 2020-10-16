@@ -8,7 +8,7 @@ import dogicon from '../assets/doggo.png'
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
   body {
-    background-color:  #7E549F;
+    background-color:  #714C8A;
     font-family: 'Passion One', cursive;
     overflow: hidden;
     text-align: center;

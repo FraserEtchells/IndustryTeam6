@@ -107,7 +107,7 @@ const GlobalStyle = createGlobalStyle`
       src: url(${PassionOne});
     }
     body {
-      background-color: #7E549F;
+      background-color: #714C8A;
       text-align: center;
       align-content: center;
     }

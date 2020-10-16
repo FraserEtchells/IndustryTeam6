@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     src: url(${PassionOne});
   }
   body {
-    background-color:  #7E549F;
+    background-color:  #714C8A;
     font-family: 'Passion One', cursive;
     overflow: hidden;
     text-align: center;
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
 
 // grid width can be changed depending on how big the other components are
 export const Grid = styled.div`
-  background-color: #7E549F; // purple
+  background-color: #714C8A; // purple
   width: 940px;
 `;
 
