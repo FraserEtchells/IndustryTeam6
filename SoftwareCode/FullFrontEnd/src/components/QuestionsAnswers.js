@@ -61,11 +61,11 @@ export const Col = styled.div`
 
 const Button = styled.button`
     font-family:'PassionOne';
-    color: white;
+    color: #714c8a;
     border: none;
     width: 50%;
     height: 200px;
-    font-size: 20px;
+    font-size: 2em;
     margin-top: 10px;
     margin-bottom: 5px;
     margin-left: 5px;
