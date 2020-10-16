@@ -58,8 +58,8 @@ const TextStyle = styled.p`
 const CardImg = styled.div`
 
    position: relative;
-    top: 15px;
-    padding-left: 15px;
+    top: 0.4em;
+    padding-left: 2em;
 
 `;
 
@@ -155,6 +155,10 @@ class Leaderboard extends React.Component {
                         <Card icon={icon}/>
                       </CardImg>
 
+                      <CardImg>
+                        <Card icon={icon}/>
+                      </CardImg>
+
   	           		  </Col>
 
                 </CardStyle>
@@ -164,6 +168,7 @@ class Leaderboard extends React.Component {
   	          			<Card name ={name} />
   	          			<Card name ={name} />
   	          			<Card name ={name} />
+                    <Card name ={name} />
   	           	 </Col>
   	           	</CardStyle>
 
@@ -172,6 +177,7 @@ class Leaderboard extends React.Component {
     	         			<Card score={score} />
     	         			<Card score={score} />
     	         			<Card score={score} />
+                    <Card score={score} />
   	         		  </Col>
   	         		</CardStyle>
   	         	</Row>
