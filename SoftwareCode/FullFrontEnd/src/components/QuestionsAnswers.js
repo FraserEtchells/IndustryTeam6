@@ -37,9 +37,8 @@ export const QuestionRow = styled.div`
   justifyContent: center;
   alignItems: center;
   margin:;
-  padding: 5px 5px;
-  text-align: center;
-  height:px;
+  padding: 1em;
+  height:95%;
 `;
 
 export const QuestionText = styled.h2`

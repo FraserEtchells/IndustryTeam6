@@ -59,7 +59,6 @@ const CardImg = styled.div`
 
    position: relative;
     top: 15px;
-    padding-bottom: 15px;
     padding-left: 15px;
 
 `;
@@ -81,7 +80,7 @@ const Leadheader =  styled.div`
 
 const Container =  styled.div`
 
-  width: 550px;
+  width: 60%;
 
 `;
 
