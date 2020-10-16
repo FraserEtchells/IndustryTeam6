@@ -81,7 +81,9 @@ const Leadheader =  styled.div`
 const Container =  styled.div`
 
   width: 60%;
-
+  position: relative;
+  left: 25%;
+  bottom: 5%;
 `;
 
 
