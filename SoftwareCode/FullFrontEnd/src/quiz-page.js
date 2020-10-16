@@ -88,7 +88,7 @@ const Header = () => {
                             <Col size={1}>
                 <HashRouter>
                   {/* TODO: ADD 'ARE YOU SURE?' POPUP */}
-                  <Link to='main-menu'>
+                  <Link to='./'>
                     <Button as="button" type="button">EXIT</Button>
                   </Link>
                 </HashRouter>
