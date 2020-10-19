@@ -41,7 +41,7 @@ export const progress = styled.div`
     rgba(210, 0, 160, 0.4332107843137255) 100%
   );
 
-  height: 20px;
+  height: 2rem;
   transition: 1s linear;
   transition-delay: 0s;
   border-radius: 2rem;
@@ -59,35 +59,44 @@ export const countdown = styled.div `
     font-size: 24pt;
 `;
 
-export default function Timer() {
+class Timer extends React.Component {
     
-  const [timer, setTimer] = React.useState(15);
-    
-  const id =React.useRef(null);
-    
-  const clear=()=>{
-  window.clearInterval(id.current)
-}
-  
-  React.useEffect(()=>{
-     id.current=window.setInterval(()=>{
-      setTimer((time)=>time-1)},1000)
-      
-    return ()=>clear();
-  },[])
-
-  React.useEffect(()=>{
-    if(timer===0){
-        
-      clear()
+    constructor(props) {
+        super(props);
+        this.interval = null;
     }
 
-  },[timer])
-
-
-  return (
-    <div className="countdown">
-        <div className = "countdown"> {timer} </div>
-    </div>
-  );
+componentDidMount() {
+    this.countDown()
+    
 }
+
+    countDown = () => {
+        this.interval = setInterval(() => {
+            if (this.props.timeValue > 0) {
+                this.props.action()
+            }
+            else {
+                clearInterval(this.interval)
+            }
+        }, 1000);
+    }    
+
+
+render() {
+    return (
+        
+      <React.Fragment>
+        
+      <GlobalStyle/>
+            <div className="countdown">
+                <p>Timer: </p>      
+        </div>
+        
+      </React.Fragment> 
+    );
+}
+      
+}
+
+export default Timer;

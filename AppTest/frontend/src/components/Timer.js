@@ -59,35 +59,49 @@ export const countdown = styled.div `
     font-size: 24pt;
 `;
 
-export default function Timer() {
+class Timer extends React.Component {
     
-  const [timer, setTimer] = React.useState(15);
-    
-  const id =React.useRef(null);
-    
-  const clear=()=>{
-  window.clearInterval(id.current)
-}
-  
-  React.useEffect(()=>{
-     id.current=window.setInterval(()=>{
-      setTimer((time)=>time-1)},1000)
-      
-    return ()=>clear();
-  },[])
-
-  React.useEffect(()=>{
-    if(timer===0){
-        
-      clear()
+    constructor(props) {
+        super(props);
+        this.state = {
+            time: 15,
+        };
     }
 
-  },[timer])
-
-
-  return (
-    <div className="countdown">
-        <div className = "countdown"> {timer} </div>
-    </div>
-  );
+componentDidMount() {
+    this.countDown()
+    
 }
+
+countDown = () => {
+    console.log(this.state.time);
+    this.setState((prevState) => {
+        return{
+            time: prevState.time - 1
+        }
+    })
+}
+
+componentDidUpdate(){
+    if(this.state.time > 0){
+        setTimeout(this.countDown, 1000) // loops
+    }
+}
+
+render() {
+    return (
+        
+      <React.Fragment>
+        
+      <GlobalStyle/>
+        <div className="countdown">
+            {this.state.time}
+        </div>
+        
+      </React.Fragment> 
+    );
+}
+      
+}
+
+export default Timer;
