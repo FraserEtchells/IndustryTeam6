@@ -32,11 +32,13 @@ function makeid(length=6) {
 
 
 
-function CreateLobby(name,id){
+function CreateLobby(name,id,col,ani){
   let user={
     id,
     PlayerName: name,
-    score:0
+    score:0,
+    Colour:col,
+    Animal:ani
   }
 
   let LobbyCode= makeid();
@@ -55,11 +57,13 @@ function CreateLobby(name,id){
 }
 
 
-function JoinLobby(name,code,id){
+function JoinLobby(name,code,id,col,ani){
   let user={
     id,
     PlayerName: name,
-    score:0
+    score:0,
+    Colour:col,
+    Animal:ani
   }
 
   if(!(Lobbies.hasOwnProperty(code))){
@@ -129,7 +133,9 @@ function getLeaderboard(code){
   for (let index = 0; index <  Lobbies[code].players.length; index++) {
     leaderboard[index]={
       name:Lobbies[code].players[index].PlayerName,
-      score:Lobbies[code].players[index].score
+      score:Lobbies[code].players[index].score,
+      colour:Lobbies[code].players[index].colour,
+      animal:Lobbies[code].players[index].animal
     }
   }
 
@@ -153,11 +159,11 @@ io.on('connection', (socket) => {
     socket.user= user;
   })
 
-  //NAME:name:HOST
+  //NAME:name:HOST:RED:DOG
   //HOST- name
-  socket.on("HOST", (name)=>{
+  socket.on("HOST", (name,colour,animal)=>{
     console.log("Create Lobby");
-    var lobbyCode=CreateLobby(name,socket.id);
+    var lobbyCode=CreateLobby(name,socket.id,colour,animal);
     socket.join(lobbyCode);
 
     //Emit the code back
@@ -165,12 +171,12 @@ io.on('connection', (socket) => {
   })
 
 
-  //NAME:name:JOIN:code
+  //NAME:name:JOIN:code:RED:DOG
   //JOIN:name,code
-  socket.on("JOIN", ({name,code})=>{
+  socket.on("JOIN", ({name,code,colour,animal})=>{
     console.log(`Joining Lobby ${code}`);
     //Join the lobby
-    var worked=JoinLobby(name,code,socket.id);
+    var worked=JoinLobby(name,code,socket.id,colour,animal);
     
     if(worked){
       //JoinRoom
