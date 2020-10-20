@@ -1,18 +1,20 @@
 //Quiz Server Lobby
 //Ross Mitchell and Melvin Abraham
 
-const { Console } = require('console');
-
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-
 const port = 4000;
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
 
+
+const app = express();
+const server =http.createServer(app);
+const io = socketio(server);
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'index./html')));
 var Lobbies={};
 
 
@@ -225,7 +227,4 @@ io.on('connection', (socket) => {
 });
 
 
-
-http.listen(port, () => {
-  console.log(`listening on *:${port}`);
-});
+server.listen(port, () => console.log(`Server running on port ${port}`));
