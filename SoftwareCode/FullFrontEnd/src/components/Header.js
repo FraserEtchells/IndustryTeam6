@@ -14,11 +14,11 @@ const Logo = styled.img`
   margin: 0.1em;
   width: calc(0.035*100vw);
   height: calc(0.035*100vw);
-  margin-top: -1%;
+  margin-top: -8%;
 `;
 
 const Name = styled.h1`
-  font-size: calc(0.03*100vw);
+  font-size: calc(0.025*100vw);
   margin-top: -0.01%;
   font-family:'PassionOne';
 `;
@@ -30,14 +30,14 @@ export const Col = styled.div`flex: ${(props) => props.size};`;
 export const Button = styled.button`
   float: right;
   background-color: Transparent;
-  font-size: calc(0.03*100vw);
+  font-size: calc(0.025*100vw);
   font-family:'PassionOne';
   color: #e266ac;
   border: none;
   outline: none;
   padding: 12px;
   margin-right: 20px;
-  margin-top: -0.01%;
+  margin-top: -1%;
 
   :hover {
     text-decoration: underline;

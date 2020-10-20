@@ -13,6 +13,7 @@ import {
 import Leaderboard from './components/Leaderboard';
 import QuestionsAnswers from './components/QuestionsAnswers';
 import Timer from './components/Timer';
+import Header from './components/Header';
 
 export const Grid = styled.div``;
 export const Row = styled.div`display: flex;`;
@@ -76,29 +77,31 @@ const GlobalStyle = createGlobalStyle`
       font-family: 'PassionOne';
     }
 `;
-const Header = () => {
+const Page = () => {
   return (
     <React.Fragment>
     <GlobalStyle/>
       <HeaderContainer>
         <header>
           <Grid>
-            <Row>
-              <Col size={0}>
+            {/* <Row> */}
+              {/* <Col size={0}>
                                 <Logo src={logo} alt="Logo"/>
                             </Col>
                             <Col size={0}>
                                 <Title>QUIZSTAR</Title>
                             </Col>
-                            <Col size={1}>
-                <HashRouter>
+                            <Col size={1}> */}
+                            {/* <Col> */}
+                <Header/>
+                {/* <HashRouter> */}
                   {/* TODO: ADD 'ARE YOU SURE?' POPUP */}
-                  <Link to='./'>
+                  {/* <Link to='./'>
                     <Button as="button" type="button">EXIT</Button>
-                  </Link>
-                </HashRouter>
-              </Col>
-                        </Row>
+                  </Link> */}
+                {/* </HashRouter> */}
+              {/* </Col> */}
+                        {/* </Row> */}
                         <TimerRow>
                             <Col size={1}>
                                 <Timer>
@@ -134,9 +137,9 @@ const Header = () => {
 /// ========================================
 
 ReactDOM.render(
-  <Header/>,
+  <Page/>,
   document.getElementById('root')
 );
 
 // export default Header;
-export default Header;
+export default Page;

@@ -121,7 +121,9 @@ class MainMenu extends React.Component {
           </Link>
         </Row>
         <Row>
-          <Button3>JOIN FRIENDS</Button3>
+          <Link to='./non-host-view'>
+            <Button3>JOIN FRIENDS</Button3>
+          </Link>
         </Row>
       </Grid>
       </HashRouter>
