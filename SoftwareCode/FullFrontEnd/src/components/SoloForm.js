@@ -161,9 +161,9 @@ class PlayerInput extends React.Component {
   // }
 }
 
-ReactDOM.render(
-    <PlayerInputFrm/>,
-    document.getElementById('root')
-  );
+// ReactDOM.render(
+//     <PlayerInputFrm/>,
+//     document.getElementById('root')
+//   );
 
 export default PlayerInputFrm;

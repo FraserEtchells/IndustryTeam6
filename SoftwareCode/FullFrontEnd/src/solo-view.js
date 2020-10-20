@@ -8,6 +8,7 @@ import PassionOne from './fonts/PassionOne.ttf';
 //import UI components
 import Customisation from './components/Customisation';
 import Form from './components/SoloForm';
+import Header from './components/Header';
 //import MainMenu from './components/MainMenu';
 
 
@@ -39,7 +40,7 @@ const LobbyPage = () => {
   return (
     <React.Fragment>
     <GlobalStyle/>
-
+    <Header/>
     <Row>
 
        	<Form/>
