@@ -21,9 +21,9 @@ const GlobalStyle = createGlobalStyle`
 // grid width can be changed depending on how big the other components are
 export const Grid = styled.div`
   background-color: #714C8A; // purple
-  width: 940px;
+ 
   position: relative;
-  left: 5em;
+  left: 2em;
 `;
 
 
@@ -40,11 +40,13 @@ export const QuestionRow = styled.div`
   alignItems: center;
   margin:;
   padding: 1em;
-  height:95%;
+  height:10vh;
+  width:92vmin;
 `;
 
 export const QuestionText = styled.h2`
-
+  font-size: calc(0.5em + 1vw);
+  color: #714C8A;
 `;
 
 export const Row = styled.div`
@@ -64,13 +66,12 @@ const Button = styled.button`
     font-family:'PassionOne';
     color: #714c8a;
     border: none;
-    width: 50%;
-    height: 200px;
+    width: 48vmin;
+    height: 20vmin;
     font-size: 2em;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-right: 0.75vw;
     outline: none;
     
     :hover {

@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
+import dogicon from '../assets/doggo.png'
 
+console.log(dogicon);
 
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
@@ -41,9 +43,9 @@ var IconPicker = styled.div`
 const ColourHead = styled.div`
   background-color: #422d53;
   color: #c3b0d3;
-  width: 100%;
-  height: 1.2em;
-  font-size:2em;
+  width: 43vw;
+  height: calc(0.035*70vw);
+  font-size: calc(2*1vw);
   text-align: center;
   border-radius: 5px 5px 0 0;
   margin: 0;
@@ -65,8 +67,8 @@ export const Container = styled.div`
   background-color: #cab1de; // lilac
   margin-left: 0.5em;
 text-align: center;
-height: 20em;
-width: 38em;
+height: 24em;
+//          <dogBtn/>width: 34vw;
 border-radius: 0.3em;
 margin-top: 0.3em;
 }
@@ -218,6 +220,20 @@ const CyanBtn = styled.button`
   border-radius: 50%;
 `;
 
+const DogBtn = styled.button`
+
+  background-image: url(${require('../assets/doggo.png')});
+  background-repeat: no-repeat;
+  border: none;
+  color: #7e549f;
+  padding: 1.8vw;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+
+`;
+
+
 class Custom extends React.Component {
   constructor() {
     super();
@@ -254,6 +270,7 @@ class Custom extends React.Component {
 
           <Row>
           
+              <DogBtn/>
           </Row>
         </Container>
       </React.Fragment>

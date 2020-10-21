@@ -20,7 +20,7 @@ export const Row = styled.div`display: flex;`;
 export const TimerRow = styled.div`
 display: fixed;
 position: relative;
-left: 6.7em;
+right: -55vmin;
 font-size: 3.5em;
 `;
 export const Col = styled.div`flex: ${(props) => props.size};`;;

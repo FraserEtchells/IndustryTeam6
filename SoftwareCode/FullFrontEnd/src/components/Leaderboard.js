@@ -39,13 +39,13 @@ export const Col = styled.div`
 const CardStyle = styled.div`
 
 	display: table;
-	padding-right: 30px;
-  font-size: 35px;
-  background-color: #E1D3E4;
+	padding-right:calc(1*1vw);
+  font-size: calc(2*1vw);
   color: #2A1D34;
   margin: 0; 
-
-  height: 3.57em;
+  height: 13vh;
+  position: relative;
+  right: 1vw;
 
 
 `;
@@ -69,10 +69,10 @@ const Leadheader =  styled.div`
   justifyContent: center;
   alignItems: center;
   color: #C3B0D3;
-  width: 100%;
-  height: 3.1rem;
-  font-size: 45px;
-  border-radius: 5px 5px 0 0;
+  width: 25vw;
+  height: calc(1.3*1vw);
+  font-size: calc(2*1vw);
+  border-radius: 0.5em 0.5em 0 0;
   padding-top: 0.04rem;
   padding-bottom: 4rem;
 `;
@@ -80,15 +80,16 @@ const Leadheader =  styled.div`
 
 const Container =  styled.div`
 
-  width: 60%;
-  position: relative;
-  left: 25%;
-  bottom: 5%;
+width: 25vw;
+position: relative;
+left: 4vw;
+bottom: 5vh;
 `;
 
 
 const Title = styled.h1`
   margin: 0.1em
+
 `;
 
 console.log(dogicon);
