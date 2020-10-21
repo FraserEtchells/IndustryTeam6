@@ -4,10 +4,11 @@ import Timer from "./Timer"
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
-import openSocket from "socket.io-client";
+//import openthis.props.socket from "this.props.socket.io-client";
 import PassionOne from '../fonts/PassionOne.ttf';
 
-const socket= openSocket("http://localhost:4000");
+//const this.props.socket= openthis.props.socket("http://localhost:4000");
+//const this.props.socket= this.props.this.props.socket;
 
 export const TimerRow = styled.div`display: fixed;`;
 
@@ -105,8 +106,6 @@ const Button = styled.button`
       text-decoration: underline;
       font-size: 2.5em;
     }
-
-
 `;
 
 
@@ -126,6 +125,7 @@ const Button3 = styled(Button)`
 const Button4 = styled(Button)`
   background: #F4A460; // orange
   `;
+
 
   class TimerApp extends React.Component {
     constructor(props) {
@@ -155,8 +155,11 @@ const Button4 = styled(Button)`
 }
 
 class Quiz extends Component{
+    //this.props.socket= this.props.this.props.socket;
+
+
     state = {
-        question:[],
+        question:[ ],
         code:"",
         name:"JohnDoe",
         leaderboard:{0:{
@@ -168,10 +171,10 @@ class Quiz extends Component{
 
     componentWillMount(){
         //Join as host
-        socket.emit("HOST",this.state.name);
+        this.props.socket.emit("HOST",this.state.name);
 
         //Recive the lobby code
-        socket.on("CODE",lobbyCode =>{
+        this.props.socket.on("CODE",lobbyCode =>{
             this.setState({
                 code: lobbyCode
             });
@@ -179,17 +182,18 @@ class Quiz extends Component{
             console.log(this.state.code);
             let data={code:this.state.code}
             //Request the leaderboard
-            socket.emit("LEADERBOARD",data);
+            this.props.socket.emit("LEADERBOARD",data);
 
             //Request the question
             data.number= 0;
-            socket.emit("QUESTION",data);
+            this.props.socket.emit("QUESTION",data);
         });
 
     
 
         //Recive the question
-        socket.on("QUESTION", question =>{
+        this.props.socket.on("QUESTION", question =>{
+            console.log(`Questions: ${question.question}`);
             this.setState({
               question:[question]
             })
@@ -198,10 +202,10 @@ class Quiz extends Component{
 
         // data={code:this.state.code}
         //  //Request the leaderboard
-        //  socket.emit("LEADERBOARD",data);
+        //  this.props.socket.emit("LEADERBOARD",data);
 
          //Recivce the leaderboard
-         socket.on("LEADERBOARD", leaderboard => {
+         this.props.socket.on("LEADERBOARD", leaderboard => {
              this.setState({
                  leaderboard: leaderboard
              })
@@ -211,19 +215,14 @@ class Quiz extends Component{
     }
 
     nextQ = () =>{
-        let data={code: this.state.code, number: 1}
-        socket.emit("QUESTION",data);
+        let data={code: this.state.code}
+        this.props.socket.emit("QUESTION",data);
 
-        socket.on("QUESTION", question =>{
+        this.props.socket.on("QUESTION", question =>{
             this.setState({
               question:[question]
             })
         })
-        
-        this.setState({
-            color: "#714C8A"
-        })
-        
     }
 
 
@@ -233,25 +232,22 @@ class Quiz extends Component{
         userSelect= userSelect.toString();
         if(userSelect === this.state.question[0].correct_ans){
             console.log("nice")
-            this.setState({
-                color: "green"
-            })
-            
+
             let scorevalue= 5*this.state.time;
             //Emit to server
             var data={
                 score: scorevalue,
                 code: this.state.code
             }
-            socket.emit("SCORE",data);
+            this.props.socket.emit("SCORE",data);
 
             data={
                 code: this.state.code
             }
-            socket.emit("LEADERBOARD",data);
+            this.props.socket.emit("LEADERBOARD",data);
 
             //Recivce the leaderboard
-            socket.on("LEADERBOARD", leaderboard => {
+            this.props.socket.on("LEADERBOARD", leaderboard => {
                 this.setState({
                     leaderboard: leaderboard
                 });
@@ -260,14 +256,10 @@ class Quiz extends Component{
         })
         }else{
             console.log("nope")
-            this.setState({
-                color: "red"
-            })
         }
 
         //Request new question
-        
-        
+        this.nextQ();
     }
 
     renderQuestion = () =>{
@@ -285,7 +277,7 @@ class Quiz extends Component{
 
         return question.map( q => {
             return (
-                <button onClick={() => {this.CheckAns(q.answer_a)}} style = {{color: this.state.color}}>{q.answer_a}</button>
+                <button onClick={() => {this.CheckAns(q.answer_a)}}>{q.answer_a}</button>
             )
         })
     }
@@ -295,7 +287,7 @@ class Quiz extends Component{
 
         return question.map( q => {
             return (
-                <button onClick={() => {this.CheckAns(q.answer_b)}} style = {{color: this.state.color}}>{q.answer_b}</button>
+                <button onClick={() => {this.CheckAns(q.answer_b)}}>{q.answer_b}</button>
             )
         })
     }
@@ -305,7 +297,7 @@ class Quiz extends Component{
 
         return question.map( q => {
             return (
-            <button onClick={() => {this.CheckAns(q.answer_c)}} style = {{color: this.state.color}}>{q.answer_c}</button>
+            <button onClick={() => {this.CheckAns(q.answer_c)}}>{q.answer_c}</button>
             )
         })
     }
@@ -315,7 +307,7 @@ class Quiz extends Component{
 
         return question.map( q => {
             return (
-                <button onClick={() => {this.CheckAns(q.answer_d)}} style = {{color: this.state.color}}>{q.answer_d}</button>
+                <button onClick={() => {this.CheckAns(q.answer_d)}}>{q.answer_d}</button>
             )
         })
     }
@@ -340,7 +332,6 @@ class Quiz extends Component{
         if(this.state.time===0){
             //Request new questions
             this.nextQ();
-            
         }
 
 
@@ -364,7 +355,7 @@ class Quiz extends Component{
                 </QuestionRow>
 
                 <Row>
-                  <Button1>{this.renderAnswerA()} </Button1>
+                  <Button1>{this.renderAnswerA()}</Button1>
                   <Button2>{this.renderAnswerB()}</Button2>
                 </Row>
                 <Row>
