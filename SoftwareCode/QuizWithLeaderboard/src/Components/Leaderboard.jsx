@@ -134,7 +134,6 @@ class Leaderboard extends React.Component {
         number++
       }
 
-
       return players.map( p => {
           return (
             <Row>

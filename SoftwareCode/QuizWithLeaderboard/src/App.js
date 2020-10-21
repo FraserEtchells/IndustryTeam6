@@ -1,14 +1,18 @@
-import React from 'react';
-import Quiz from './Components/Quiz';
+import React, { Component } from 'react';
+import {BrowserRouter} from 'react-router-dom'
+import Layout from './Containers/layout';
 
-function App() {
+class App extends Component{
+  render(){
   return (
     <React.Fragment>
- 
-    <Quiz />
+      <BrowserRouter>
+        <Layout/>
+      </BrowserRouter>
     </React.Fragment>
     
   );
+}
 }
 
 export default App;
