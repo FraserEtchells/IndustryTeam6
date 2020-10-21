@@ -78,6 +78,11 @@ function CreateLobby(name,id,col,ani){
   return LobbyCode
 }
 
+socket.on("READY", (lobbyCode)=>{
+    console.log(`Host Ready`);
+    //Raedy the lobby]
+    io.to(lobbycode).emit("READY", lobbyCode)
+  });
 
 function JoinLobby(name,code,id,col,ani){
   let user={
