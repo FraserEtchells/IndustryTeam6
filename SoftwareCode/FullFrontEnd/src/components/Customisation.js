@@ -43,7 +43,7 @@ var IconPicker = styled.div`
 const ColourHead = styled.div`
   background-color: #422d53;
   color: #c3b0d3;
-  width: 43vw;
+  width: 32vw;
   height: calc(0.035*70vw);
   font-size: calc(2*1vw);
   text-align: center;
@@ -67,10 +67,11 @@ export const Container = styled.div`
   background-color: #cab1de; // lilac
   margin-left: 0.5em;
 text-align: center;
-height: 24em;
+height: 246em;
 //          <dogBtn/>width: 34vw;
 border-radius: 0.3em;
 margin-top: 0.3em;
+width: 32vw;
 }
 `;
 
