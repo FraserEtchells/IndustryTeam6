@@ -25,13 +25,13 @@ export const Col = styled.div`
 export const Div = styled.div`
   text-align: center;
   display: block;
-  align-content: center; 
+  align-content: center;
   border: solid 0.6em;
   border-color: #422d53;
   border-style: dotted;
-  height: calc(0.32*100vh);
-  width: calc(0.2*100vw);
 
+  height: calc(0.32*100vh);
+  width: calc(0.18*100vw);
 `;
 
 export const Button = styled.button`
@@ -46,6 +46,7 @@ export const Button = styled.button`
     outline: none;
     border-radius: 0.8em;
     font-family:'PassionOne';
+    margin-top: 1%;
 
     :hover {
         text-decoration: underline;
@@ -66,12 +67,13 @@ export const TextInput = styled.input`
   color: black;
   outline: none;
   border: none;
+  padding: 6%;
   // padding: 0.7em;
-  padding: 4%;
   border-radius: 25px;
   text-align: center;
   width: 92%;
-  margin-bottom: 2%;
+  font-size: calc(0.02*100vh);
+  font-family: 'PassionOne';
 `;
 
 export const Label = styled.label`
@@ -82,23 +84,14 @@ export const Label = styled.label`
   padding-left: 0.3em;
   text-align: center;
   font-size: calc(0.04*100vh);
-  padding-top: 2%;
+  margin-top: 4%;
 `;
 
-// export const P = styled.p`
-//   color: black;
-//   opacity: 0.7;
-//   font-family: 'Passion One', cursive;
-//   text-align: center;
-// `;
-
 export const Code = styled.p`
-    // font-size: 5em;
-    font-size: calc(0.08*100vh);
+    font-size: 5em;
     margin: 0;
     color: #cab1de;
     font-family:'PassionOne';
-    margin-top: -3%;
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -113,18 +106,6 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-// const ReadyBtn = () => {
-//     return (
-//         <React.Fragment>
-//             <GlobalStyle/>
-//             <body>
-//                 <Button as="button" type="button">READY</Button>
-//             </body>
-//         </React.Fragment>
-//     );
-//   }
-
-
 const PlayerInputFrm = () => {
   return (
     <React.Fragment>
@@ -136,9 +117,8 @@ const PlayerInputFrm = () => {
             <TextInput type='text' id='nickname' name='nickname'/>
           </Row>
           <Row>
-            {/* GAME CODE WILL BE FETCHED FROM BE AND DISPLAYED TO HOST HERE */}
-            <Label for='Code'>YOUR GAME CODE IS</Label>
-            <Code>{lobbyCode}</Code>
+            <Label for='gameCode'>GAME CODE</Label>
+            <TextInput type='text' id='gameCode' name='gameCode'/>
           </Row>
           <HashRouter>
             <Link to='./quiz-page'>

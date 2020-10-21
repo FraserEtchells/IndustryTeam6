@@ -12,13 +12,13 @@ import {
 const Logo = styled.img`
   background-image: url(../assets/logo.svg);
   margin: 0.1em;
-  width: calc(0.035*150vw);
-  height: calc(0.035*150vw);
+  width: calc(0.035*100vw);
+  height: calc(0.035*100vw);
   margin-top: -8%;
 `;
 
 const Name = styled.h1`
-  font-size: calc(0.035*120vw);
+  font-size: calc(0.025*100vw);
   margin-top: -0.01%;
   font-family:'PassionOne';
 `;
@@ -30,7 +30,7 @@ export const Col = styled.div`flex: ${(props) => props.size};`;
 export const Button = styled.button`
   float: right;
   background-color: Transparent;
-  font-size: calc(0.035*120vw);
+  font-size: calc(0.025*100vw);
   font-family:'PassionOne';
   color: #e266ac;
   border: none;
