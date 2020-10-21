@@ -111,20 +111,20 @@ class MainMenu extends React.Component {
     <HashRouter>
       <Grid>
         <Row>
-        <Link to="./solo-view">
-          <Button1>PLAY SOLO</Button1>
-          </Link>
-        </Row>
-        <Row>
-          <Link to='./index-custom-page'>
-            <Button2>HOST MULTIPLAYER GAME</Button2>
+        <Link to="./index-custom-page">
+          <Button1>CREATE GAME</Button1>
           </Link>
         </Row>
         <Row>
           <Link to='./non-host-view'>
-            <Button3>JOIN FRIENDS</Button3>
+            <Button2>JOIN GAME</Button2>
           </Link>
         </Row>
+        {/* <Row>
+          <Link to='./non-host-view'>
+            <Button3>JOIN FRIENDS</Button3>
+          </Link>
+        </Row> */}
       </Grid>
       </HashRouter>
 
