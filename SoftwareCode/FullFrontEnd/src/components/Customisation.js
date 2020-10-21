@@ -67,7 +67,7 @@ export const Container = styled.div`
   background-color: #cab1de; // lilac
   margin-left: 0.5em;
 text-align: center;
-height: 246em;
+height: 26em;
 //          <dogBtn/>width: 34vw;
 border-radius: 0.3em;
 margin-top: 0.3em;
