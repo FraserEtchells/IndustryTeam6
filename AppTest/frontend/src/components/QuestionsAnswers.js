@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import { createGlobalStyle } from 'styled-components'
 
-import Timer from './Timer';
-
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
   body {
@@ -127,9 +125,7 @@ const Button4 = styled.button`
 // want to use this colour in background but not sure how outside of divs
 //  background-color: #7E549F;
 
-console.log(Timer);
 class Answers extends React.Component {
-    
   state = {
 
   };

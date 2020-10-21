@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from 'react';
 import ReactDOM from 'react-dom';
 import logo from './assets/logo.svg';
 import styled from 'styled-components';
@@ -71,30 +71,6 @@ const GlobalStyle = createGlobalStyle`
       font-family: 'PassionOne';
     }
 `;
-class TimerApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.timer = null;
-        this.state = {
-            timeValue: 15,
-        };
-        this.handler = this.handler.bind(this);
-    }
-    handler() {
-        this.setState((state) => ({
-            timeValue: this.state.timeValue - 1,
-        }));
-    }
-    render() {
-        return (
-            <React.Fragment>
-                <Timer action={this.handler} timeValue={this.state.timeValue} />
-                <p> {this.state.timeValue} </p>
-            </React.Fragment>
-        )
-
-    }
-}
 const Header = () => {
   return (
     <React.Fragment>
@@ -120,9 +96,9 @@ const Header = () => {
                         </Row>
                         <TimerRow>
                             <Col size={1}>
-                                <TimerApp>
+                                <Timer>
                                     
-                                </TimerApp>
+                                </Timer>
                             </Col>
       
                         </TimerRow>
