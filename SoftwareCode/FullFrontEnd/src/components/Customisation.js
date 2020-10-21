@@ -226,7 +226,7 @@ const DogBtn = styled.button`
   background-repeat: no-repeat;
   border: none;
   color: #7e549f;
-  padding: 1.8vw;
+  padding: 1.35vw;
   margin: 4px 2px;
   cursor: pointer;
   border-radius: 50%;
