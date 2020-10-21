@@ -73,6 +73,7 @@ function CreateLobby(name,id,col,ani){
     players:[user],
     question:[],
     idquestionsAlreadyAsked:[]
+
   }
 
   return LobbyCode
@@ -264,6 +265,7 @@ io.on('connection', (socket) => {
   //CreateLobby();
   loadQuestionPre(10);
 
+
   socket.on('new_visitor',user=>{
     console.log("new visitor", user);
     socket.user= user;
@@ -279,7 +281,6 @@ io.on('connection', (socket) => {
     Lobbies[lobbyCode].question=question;
     Lobbies[lobbyCode].idquestionsAlreadyAsked=idquestionsAlreadyAsked;
     socket.join(lobbyCode);
-    
     
     //Emit the code back
     io.emit("CODE",lobbyCode);
@@ -312,10 +313,12 @@ io.on('connection', (socket) => {
 
   //NAME:name:CODE:code:QUESTION
   //QUESTION- code
+
   socket.on("QUESTION", ({code})=>{
     //Get the question
     console.log("get question");
     console.log(`QuestionsArray: ${Lobbies[code].question}`)
+
       var questionToSend= getQuestion(code);
       io.emit("QUESTION",questionToSend)
       question.splice(0,1);
