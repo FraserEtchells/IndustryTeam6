@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
-import dogicon from '../assets/doggo.png'
-
-console.log(dogicon);
 
 const GlobalStyle = createGlobalStyle`
  @import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
@@ -43,7 +40,7 @@ var IconPicker = styled.div`
 const ColourHead = styled.div`
   background-color: #422d53;
   color: #c3b0d3;
-  width: 32vw;
+  width: calc(0.35*100vw);
   height: calc(0.035*70vw);
   font-size: calc(2*1vw);
   text-align: center;
@@ -67,11 +64,11 @@ export const Container = styled.div`
   background-color: #cab1de; // lilac
   margin-left: 0.5em;
 text-align: center;
-height: 26em;
-//          <dogBtn/>width: 34vw;
+height: calc(0.38*100vh);
+ width: calc(0.35*100vw);
 border-radius: 0.3em;
 margin-top: 0.3em;
-width: 32vw;
+
 }
 `;
 
@@ -271,7 +268,7 @@ class Custom extends React.Component {
 
           <Row>
           
-              <DogBtn/>
+        
           </Row>
         </Container>
       </React.Fragment>

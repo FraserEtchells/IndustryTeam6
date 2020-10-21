@@ -8,6 +8,7 @@ import PassionOne from './fonts/PassionOne.ttf';
 //import UI components
 import Customisation from './components/Customisation';
 import Form from './components/HostForm';
+import Players from './components/PlayerList';
 //import MainMenu from './components/MainMenu';
 
 
@@ -30,7 +31,7 @@ export const Row = styled.div`
   padding: 4em;
   padding: 4em;
 	position: relative;
-	left: 20%;
+	left: 10vw;
 	top: 30%;
   font-family:'PassionOne';
 `;
@@ -45,6 +46,8 @@ const LobbyPage = () => {
        	<Form/>
 
     	<Customisation/>
+
+      <Players />
       
     </Row>
     </React.Fragment>
