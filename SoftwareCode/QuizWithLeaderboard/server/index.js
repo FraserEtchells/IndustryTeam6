@@ -1,12 +1,25 @@
 //Quiz Server Lobby
 //Ross Mitchell and Melvin Abraham
 
-const port = 4000;
+// const { Console } = require('console');
+// const path = require('path');
+// var app = require('express')();
+// var http = require('http').createServer(app);
+// var io = require('socket.io')(http);
+// app.get('/', (req, res) => {
+//   res.sendFile(__dirname + '/index.html');
+// });
+
+const port = process.env.PORT || 4000;
 
 const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+var mongo = require('mongodb');
+var assert = require('assert');
+
+var url='mongodb://team6-mongodb:4LITWMsMLAzi1w4rZbuOo0wgaaUlFk0nO3WMj1riXjsnL0rkZqmRgeX0oVnWTHOhlOgr7NX6H97S00pwfgWxlA==@team6-mongodb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@team6-mongodb@'
 
 
 const app = express();
@@ -15,12 +28,17 @@ const io = socketio(server);
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'index./html')));
+
+
+
 var Lobbies={};
 
+var question=[];
+var idquestionsAlreadyAsked=[]
 
 
 //Function to create random id of N length (makeid) was not created by the team
-//was created by user csharptest.net on stackoverflow
+// was created by user csharptest.net on stackoverflow
 // https://stackoverflow.com/a/1349426
 function makeid(length=6) {
   var result           = '';
@@ -52,7 +70,9 @@ function CreateLobby(name,id,col,ani){
 
   Lobbies[LobbyCode]={
     lobbycode: LobbyCode,
-    players:[user]
+    players:[user],
+    question:[],
+    idquestionsAlreadyAsked:[]
   }
 
   return LobbyCode
@@ -79,6 +99,8 @@ function JoinLobby(name,code,id,col,ani){
 
 }
 
+
+
 function removeUser(id){
   //find user in lobbies
   for(key in Lobbies){
@@ -100,27 +122,117 @@ function updateScore(id,code,scoreToAdd){
       }
 }
 
-function getQuestion(value){
-  if (value==1){
-    return {'answer_a': 'Melvin Abraham',
-  'answer_b': 'Melvin Abraham',
-  'answer_c': 'Melvin Abraham',
-  'answer_d': 'Melvin Abraham',
-  'category': 'General',
-  'correct_ans': 'Melvin Abraham',
-  'id': 101,
-  'question': 'Who is the best member of Team 6?'}
+async function loadQuestionPre(numberOfRounds){
+  mongo.connect(url, function(err, db){
+    if(err){
+      console.log("We have an error1");
+    }
+    console.log("got MDBhere");
+    var dbo= db.db("questions");
+    var client=dbo.collection("questions");
 
-  }else{
-  return {'answer_a': 'Jason varitek',
-  'answer_b': 'Pokey reese',
-  'answer_c': 'Johnny damon',
-  'answer_d': 'Mark bellhorn',
-  'category': 'sports',
-  'correct_ans': 'Johnny damon',
-  'id': 107,
-  'question': 'Who led the 2004 Red Sox regular season in number of stolen bases?'}
+
+    //Get id's without repeating
+    var idtoGet=[];
+
+    //Generate random number
+    var max= 500;
+    
+  
+
+    while (numberOfRounds>0) {
+       // 1 -> 500
+        var id= Math.floor(Math.random() * max) + 1;
+        //Check if id is in id array and if already asked
+          if(idtoGet.indexOf(id) && idquestionsAlreadyAsked.indexOf(id) === -1){
+            idtoGet.push(id);
+            numberOfRounds-=1;
+          }else{
+          //go again 
+            console.log(`id already used`);
+          }
+    }
+    
+
+
+
+    console.log(`idsTofind ${idtoGet}`)
+
+    for (let index = 0; index < idtoGet.length; index++) {
+      dbo.collection("questions").findOne({"id":idtoGet[index]}, async function(err, result){
+        if(err){
+          console.log(`we have an error 2`);
+        }
+  
+        await question.push(result);
+      });
+    }
+    
+
+  })
+}
+
+
+async function loadQuestion(numberOfRounds, code){
+  mongo.connect(url, function(err, db){
+    if(err){
+      console.log("We have an error1");
+    }
+    console.log("got MDBhere");
+    var dbo= db.db("questions");
+    var client=dbo.collection("questions");
+
+
+    //Get id's without repeating
+    var idtoGet=[];
+
+    //Generate random number
+    var max= 500;
+    
+  
+
+    while (numberOfRounds>0) {
+       // 1 -> 500
+        var id= Math.floor(Math.random() * max) + 1;
+        //Check if id is in id array and if already asked
+          if(idtoGet.indexOf(id) && Lobbies[code].idquestionsAlreadyAsked.indexOf(id) === -1){
+            idtoGet.push(id);
+            numberOfRounds-=1;
+          }else{
+          //go again 
+            console.log(`id already used`);
+          }
+    }
+    
+
+
+
+    console.log(`idsTofind ${idtoGet}`)
+
+    for (let index = 0; index < idtoGet.length; index++) {
+      dbo.collection("questions").findOne({"id":idtoGet[index]}, async function(err, result){
+        if(err){
+          console.log(`we have an error 2`);
+        }
+  
+        await Lobbies[code].question.push(result);
+      });
+    }
+    
+
+  })
+}
+
+
+
+
+function getQuestion(code){
+  if(Lobbies[code].question.length<2){
+    loadQuestion(9,code);
   }
+
+  Lobbies[code].idquestionsAlreadyAsked.push(Lobbies[code].question[0].id);
+  return Lobbies[code].question[0]
 }
 
 
@@ -141,11 +253,6 @@ function getLeaderboard(code){
     }
   }
 
-
-
-
-
-
   return leaderboard;
 
 }
@@ -155,26 +262,33 @@ function getLeaderboard(code){
 io.on('connection', (socket) => {
   console.log('a user connected');
   //CreateLobby();
+  loadQuestionPre(10);
 
   socket.on('new_visitor',user=>{
     console.log("new visitor", user);
     socket.user= user;
   })
 
-  //NAME:name:HOST:RED:DOG
-  //HOST- name
+  //NAME:name:HOST
+  //HOST- name, colour, animal
   socket.on("HOST", (name,colour,animal)=>{
     console.log("Create Lobby");
-    var lobbyCode=CreateLobby(name,socket.id,colour,animal);
-    socket.join(lobbyCode);
 
+    var lobbyCode=CreateLobby(name,socket.id,colour,animal);
+    //loadQuestion(10,lobbyCode);
+    Lobbies[lobbyCode].question=question;
+    Lobbies[lobbyCode].idquestionsAlreadyAsked=idquestionsAlreadyAsked;
+    socket.join(lobbyCode);
+    
+    
     //Emit the code back
     io.emit("CODE",lobbyCode);
   })
 
 
+ 
   //NAME:name:JOIN:code:RED:DOG
-  //JOIN:name,code
+  //JOIN:name,code, colour, animal
   socket.on("JOIN", ({name,code,colour,animal})=>{
     console.log(`Joining Lobby ${code}`);
     //Join the lobby
@@ -198,13 +312,18 @@ io.on('connection', (socket) => {
 
   //NAME:name:CODE:code:QUESTION
   //QUESTION- code
-  socket.on("QUESTION", ({code, number})=>{
+  socket.on("QUESTION", ({code})=>{
     //Get the question
     console.log("get question");
-      var question=getQuestion(number);
+    console.log(`QuestionsArray: ${Lobbies[code].question}`)
+      var questionToSend= getQuestion(code);
+      io.emit("QUESTION",questionToSend)
+      question.splice(0,1);
+
+
 
     //Emit back question
-      io.emit("QUESTION",question);
+      //io.emit("QUESTION",question);
   });
 
   socket.on("LEADERBOARD", ({code})=>{
@@ -225,6 +344,12 @@ io.on('connection', (socket) => {
     removeUser(socket.id);
   })
 });
+
+
+
+// http.listen(port, () => {
+//   console.log(`listening on *:${port}`);
+// });
 
 
 server.listen(port, () => console.log(`Server running on port ${port}`));
