@@ -92,8 +92,6 @@ componentWillMount(){
 
 
 
-});
-
   //Get Question
 
   //Get Leaderboard
