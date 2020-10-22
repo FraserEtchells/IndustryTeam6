@@ -80,7 +80,24 @@ const GlobalStyle = createGlobalStyle`
 
 
 class Page extends Component{
-  state ={}
+  state ={
+    question:[],
+    code:"",
+    time:30,
+    color:"",
+    leaderboard: {}
+  }
+
+componentWillMount(){
+
+
+
+});
+
+  //Get Question
+
+  //Get Leaderboard
+}
 
 
   render(){
