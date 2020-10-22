@@ -125,7 +125,18 @@ const GlobalStyle = createGlobalStyle`
 //   }
 
 
-const PlayerInputFrm = () => {
+
+
+
+class PlayerInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+
+  
+  render(){
   return (
     <React.Fragment>
       <GlobalStyle/>
@@ -133,37 +144,25 @@ const PlayerInputFrm = () => {
         <Form id="PIFrm" name="Player input form">
           <Row>
             <Label for='nickname'>NICKNAME</Label>
-            <TextInput type='text' id='nickname' name='nickname'/>
+            <TextInput type='text' id='nickname' name='nickname' value={this.state.name}/>
+            
           </Row>
-          <Row>
-            {/* GAME CODE WILL BE FETCHED FROM BE AND DISPLAYED TO HOST HERE */}
+          {/* <Row>
             <Label for='Code'>YOUR GAME CODE IS</Label>
             <Code>{lobbyCode}</Code>
-          </Row>
-          <HashRouter>
+          </Row> */}
+          {/* <HashRouter>
             <Link to='./quiz-page'>
               <Button type='submit'>READY</Button>
-            </Link>
-          </HashRouter>
+             </Link>
+          </HashRouter> */}
         </Form>
       </Div>
     </React.Fragment>
-  );
+  )
+  }
 }
 
-// this is necessary but unsure what for
-class PlayerInput extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
 
-  //   }
-  // }
-}
 
-ReactDOM.render(
-    <PlayerInputFrm/>,
-    document.getElementById('root')
-  );
-
-export default PlayerInputFrm;
+export default PlayerInput;

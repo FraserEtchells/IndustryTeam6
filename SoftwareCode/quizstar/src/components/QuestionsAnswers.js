@@ -104,46 +104,26 @@ const Button4 = styled(Button)`
 
 class Answers extends React.Component {
   state = {
-    question:[],
+    question:[this.props.question],
     code:this.props.code,
-    time:5,
+    time:2,
     color:""
   };
 
   componentWillMount(){
-    
 
-    //Ask for a question
-    console.log(this.state.code);
-    let data={code:this.state.code}
-   // this.props.socket.emit("QUESTION",data);
 
 
 
     //Recive the question
-    // this.props.socket.on("QUESTION", question =>{
-    //     console.log(`Questions: ${question.question}`);
-    //     this.setState({
-    //       question:[question]
-    //     })
-    // })
+    this.props.socket.on("QUESTION", question =>{
+        console.log(`Questions: ${question.question}`);
+        this.setState({
+          question:[question]
+        })
+    })
 }
 
-
-  nextQ = () =>{
-        let data={code: this.state.code}
-        //this.props.socket.emit("QUESTION",data);
-
-        // this.props.socket.on("QUESTION", question =>{
-        //     this.setState({
-        //       question:[question]
-        //     })
-        // })
-
-        this.setState({
-            color: "#714C8A"
-        })
-    }
 
   CheckAns = (userSelect) =>{
 
@@ -155,25 +135,14 @@ class Answers extends React.Component {
         })
         let scorevalue= 5*this.state.time;
         //Emit to score to server
-        var data={
-            score: scorevalue,
-            code: this.state.code
+        let data={
+          score: scorevalue,
+          code:this.props.code
         }
-        //this.props.socket.emit("SCORE",data);
 
-        // data={
-        //     code: this.state.code
-        // }
-        // this.props.socket.emit("LEADERBOARD",data);
+        this.props.socket.emit("SCORE",data);
+        this.props.socket.emit("LEADERBOARD",data)
 
-        // //Recivce the leaderboard
-        // this.props.socket.on("LEADERBOARD", leaderboard => {
-        //     this.setState({
-        //         leaderboard: leaderboard
-        //     });
-
-        // console.log(this.state.leaderboard);
-    // })
     }else{
         console.log("nope")
         this.setState({
@@ -182,7 +151,7 @@ class Answers extends React.Component {
     }
 
     //Request new question
-    this.nextQ();
+    this.props.nextQ();
 }
 
   renderQuestion = () =>{

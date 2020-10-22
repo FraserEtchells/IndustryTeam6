@@ -42,28 +42,30 @@ var idquestionsAlreadyAsked=[];
 // https://stackoverflow.com/a/1349426
 function makeid(length=6) {
   var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   var charactersLength = characters.length;
   for ( var i = 0; i < length; i++ ) {
      result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
+
+  result=result.toString().toUpperCase();
   return result;
 }
 
 
 
-function CreateLobby(name,id,col,ani){
+function CreateLobby(name,id,col){
   let user={
     id,
     PlayerName: name,
     score:0,
-    Colour:col,
-    Animal:ani
+    Colour:col
   }
 
   let LobbyCode= makeid();
   while (Lobbies.hasOwnProperty(LobbyCode)) {
     LobbyCode = makeid();
+    
   }
 
   user.lobby= LobbyCode;
@@ -74,18 +76,17 @@ function CreateLobby(name,id,col,ani){
     question:[],
     idquestionsAlreadyAsked:[]
   }
-
+  console.log(`left function`);
   return LobbyCode
 }
 
 
-function JoinLobby(name,code,id,col,ani){
+function JoinLobby(name,code,id,col){
   let user={
     id,
     PlayerName: name,
     score:0,
-    Colour:col,
-    Animal:ani
+    Colour:col
   }
 
   if(!(Lobbies.hasOwnProperty(code))){
@@ -250,7 +251,6 @@ function getLeaderboard(code){
       name:Lobbies[code].players[index].PlayerName,
       score:Lobbies[code].players[index].score,
       colour:Lobbies[code].players[index].colour,
-      animal:Lobbies[code].players[index].animal
     }
   }
 
@@ -272,10 +272,10 @@ io.on('connection', (socket) => {
 
   //NAME:name:HOST
   //HOST- name, colour, animal
-  socket.on("HOST", (name,colour,animal)=>{
+  socket.on("HOST", (name,colour)=>{
     console.log("Create Lobby");
-
-    var lobbyCode=CreateLobby(name,socket.id,colour,animal);
+    var lobbyCode=CreateLobby(name,socket.id,colour);
+    console.log("Create Lobby1");
     //loadQuestion(10,lobbyCode);
     Lobbies[lobbyCode].question=question;
     Lobbies[lobbyCode].idquestionsAlreadyAsked=idquestionsAlreadyAsked;
@@ -283,6 +283,7 @@ io.on('connection', (socket) => {
     
     
     //Emit the code back
+    console.log(lobbyCode);
     io.emit("CODE",lobbyCode);
   })
 
@@ -290,10 +291,10 @@ io.on('connection', (socket) => {
  
   //NAME:name:JOIN:code:RED:DOG
   //JOIN:name,code, colour, animal
-  socket.on("JOIN", ({name,code,colour,animal})=>{
+  socket.on("JOIN", ({name,code,colour})=>{
     console.log(`Joining Lobby ${code}`);
     //Join the lobby
-    var worked=JoinLobby(name,code,socket.id,colour,animal);
+    var worked=JoinLobby(name,code,socket.id,colour);
     
     if(worked){
       //Join Room
@@ -333,14 +334,15 @@ io.on('connection', (socket) => {
     //Emit the leaderboard
     io.emit("LEADERBOARD",leaderboard);
 
-  })
+  });
 
 
   //Host has send the ready message
-  socket.on("HOSTREADY", (code)=>{
+  socket.on("HOSTREADY", ()=>{
+    console.log("Got host ready");
     //Send message to all players in the lobby
-    socket.to(code).emit("GAMEREADY");
-  })
+    io.to(code).emit("GAMEREADY",code);
+  });
 
   
 

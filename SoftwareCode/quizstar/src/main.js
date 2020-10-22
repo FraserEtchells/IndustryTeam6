@@ -8,6 +8,7 @@ import {
   import CustomisationPage from "./index-custom-page";
   import QuizPage from "./quiz-page";
   import SoloView from "./solo-view";
+  import TimerPopUp from "./timerpopup";
   import NonHostView from "./non-host-view";
   import openSocket from "socket.io-client"
 
@@ -24,6 +25,7 @@ class Main extends Component {
                     <Route path="/index-custom-page" component={() => <CustomisationPage socket={socket} />}/>
                     <Route path="/quiz-page" component={() => <QuizPage socket={socket} />}/>
                     <Route path="/solo-view" component={() => <SoloView/>}/>
+                    <Route path="/timerpopup" component={() => <TimerPopUp/>}/>
                     <Route path="/non-host-view" component={() => <NonHostView socket={socket} />}/>
                 </div>
             </div>

@@ -78,9 +78,24 @@ export default function Timer() {
 
   React.useEffect(()=>{
     if(timer===0){
-        
-      clear()
+      console.log(window.location.href)
+
+      if (window.location.href === "http://localhost:3000/#/quiz-page"){
+
+         window.location.href = "http://localhost:3000/#/timerpopup";
+
+      }else{
+
+
+         window.location.href = "http://localhost:3000/#/quiz-page";
+      } 
+      
+
+     
+    clear();
     }
+   
+
 
   },[timer])
 

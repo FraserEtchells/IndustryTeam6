@@ -118,16 +118,50 @@ class Leaderboard extends React.Component {
         super(props);
 
         // set local state
-        this.state = {
-            name: "PLAYER 1",
-            score: "200",
+         this.state = {
+        //     name: "PLAYER 1",
+             score: "200",
         };
 
     }
 
+    renderPlayersNames = () =>{
+
+      var players= []
+      let number=0;
+
+      for(let key in this.props.leaderboard){
+        players[number]=this.props.leaderboard[key];
+        number++
+      }
+      return players.map(p => {
+        return(
+        <Card name ={p.name} />
+        )
+      })
+
+    }
+
+    renderPlayersScores = () =>{
+
+      var players= []
+      let number=0;
+
+      for(let key in this.props.leaderboard){
+        players[number]=this.props.leaderboard[key];
+        number++
+      }
+      return players.map(p => {
+        return(
+        <Card score ={p.score} />
+        )
+      })
+
+    }
+
     render() {
-      const {name} = this.state; 
-      const{score} = this.state;
+      // const {name} = this.state; 
+       const{score} = this.state;
       return (
       <React.Fragment>
       <GlobalStyle/>
@@ -139,19 +173,13 @@ class Leaderboard extends React.Component {
           		<Row>
   	           	<CardStyle>		
           			 <Col size={1}>
-  	          			<Card name ={name} />
-  	          			<Card name ={name} />
-  	          			<Card name ={name} />
-                    <Card name ={name} />
+  	          			{this.renderPlayersNames()}
   	           	 </Col>
   	           	</CardStyle>
 
   	           	<CardStyle>	
   	           		<Col size={1}>
-    	         			<Card score={score} />
-    	         			<Card score={score} />
-    	         			<Card score={score} />
-                    <Card score={score} />
+                    {this.renderPlayersScores()}
   	         		  </Col>
   	         		</CardStyle>
   	         	</Row>

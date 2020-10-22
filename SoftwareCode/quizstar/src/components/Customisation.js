@@ -231,6 +231,8 @@ class Custom extends React.Component {
 
   changeColour = (color) => {
     this.setState({ bgColor: color });
+    this.props.saveColor(color);
+    
   };
 
   render() {

@@ -81,21 +81,99 @@ const GlobalStyle = createGlobalStyle`
 
 class Page extends Component{
   state ={
-    question:[],
+    question:[{
+      question:"Loading",
+      answer_a: 1,
+      answer_b: 2,
+      answer_c: 3,
+      answer_d: 4,
+      correct_ans:2
+  }],
     code:"",
     time:30,
     color:"",
-    leaderboard: {}
+    leaderboard: {0:{name:"Loading",score:0}}
   }
 
 componentWillMount(){
 
 
+  //Join as host
+        this.props.socket.emit("HOST","Melvin");
 
-  //Get Question
+        //Recive the lobby code
+        this.props.socket.on("CODE",lobbyCode =>{
+            this.setState({
+                code: lobbyCode
+            });
 
-  //Get Leaderboard
+            console.log(this.state.code);
+            let data={code:this.state.code}
+            //Request the leaderboard
+            this.props.socket.emit("LEADERBOARD",data);
+
+            //Request the question
+            this.props.socket.emit("QUESTION",data);
+        });
+
+
+//   //Recive the question
+//   this.props.socket.on("QUESTION", question =>{
+//     console.log(`Questions: ${question.question}`);
+//     this.setState({
+//       question:[question]
+//     })
+// })
+
+  
+
+  this.props.socket.on("LEADERBOARD", leaderboard => {
+    this.setState({
+      leaderboard: leaderboard
+    })
+
+    console.log(this.state.leaderboard);
+  });
+
 }
+
+renderQandA =()=>{
+ var {code} = this.state;
+ var {question}= this.state;
+  return(
+    <QuestionsAnswers code={code} time={5} socket={this.props.socket} question={question} nextQ={this.nextQ} updateScore={this.updateScore}/>
+  )
+}
+
+
+
+renderLeaderboard =() =>{
+  var {leaderboard} = this.state;
+
+  return (
+      //Pass the leaderboard into the object
+      <Leaderboard leaderboard={leaderboard}/>
+  
+      )
+  
+}
+
+nextQ = () =>{
+  let data={code: this.state.code}
+  this.props.socket.emit("QUESTION",data);
+
+  this.props.socket.on("QUESTION", question =>{
+      this.setState({
+        question:[question]
+      })
+  })
+
+
+  // this.setState({
+  //     color: "#714C8A"
+  // })
+}
+
 
 
   render(){
@@ -125,7 +203,7 @@ componentWillMount(){
                         {/* </Row> */}
                         <TimerRow>
                             <Col size={1}>
-                                {/* To-do get the value of the time*/}
+                                {/* To-do get the value of the time */}
                                 <Timer>
                                     
                                 </Timer>
@@ -135,16 +213,12 @@ componentWillMount(){
                         <Row>
                             <Col size = {1}> 
                                 {/* Send the value of the timer in the time parameter*/}
-                                <QuestionsAnswers code={this.props.code} time={5} socket={this.props.socket}>
-        
-                                </QuestionsAnswers>
+                                {this.renderQandA()}
                             </Col>
                                 <Col size = {0.02}>
                             </Col>
                             <Col size = {1}>
-                                <Leaderboard>
-        
-                                </Leaderboard>
+                                {this.renderLeaderboard()}
                             </Col>
                         </Row>
 

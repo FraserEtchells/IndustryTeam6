@@ -120,14 +120,34 @@ class PlayerList extends React.Component {
         super(props);
 
         // set local state
-        this.state = {
-            name: "PLAYER 1",
-        };
+        // this.state = {
+        //     name: "PLAYER 1",
+        // };
 
     }
 
+    renderPlayersNames = () =>{
+      console.log(`forlb ${this.props.players}`);
+
+      var playersN= []
+      let number=0;
+
+      for(let key in this.props.players){
+        console.log("asd,asdaj sdgsdjkf");
+        playersN[number]=this.props.players[key];
+        number++
+      }
+      return playersN.map(p => {
+        return(
+        <Card name ={p.name} />
+        )
+      })
+
+    }
+
+
     render() {
-      const {name} = this.state; 
+      // const {name} = this.state; 
      
       return (
       <React.Fragment>
@@ -145,12 +165,7 @@ class PlayerList extends React.Component {
                 <CardStyle> 
                   <PlayerStyle>  
                  <Col size={1}>
-                    <Card name ={name} />
-                    <Card name ={name} />
-                    <Card name ={name} />
-                    <Card name ={name} />
-                    <Card name ={name} />
-                    <Card name ={name} />
+                    {this.renderPlayersNames}
                  </Col>
                  </PlayerStyle>  
                 </CardStyle>
