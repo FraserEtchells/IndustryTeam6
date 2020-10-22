@@ -116,29 +116,29 @@ class Answers extends React.Component {
     //Ask for a question
     console.log(this.state.code);
     let data={code:this.state.code}
-    this.props.socket.emit("QUESTION",data);
+   // this.props.socket.emit("QUESTION",data);
 
 
 
     //Recive the question
-    this.props.socket.on("QUESTION", question =>{
-        console.log(`Questions: ${question.question}`);
-        this.setState({
-          question:[question]
-        })
-    })
+    // this.props.socket.on("QUESTION", question =>{
+    //     console.log(`Questions: ${question.question}`);
+    //     this.setState({
+    //       question:[question]
+    //     })
+    // })
 }
 
 
   nextQ = () =>{
         let data={code: this.state.code}
-        this.props.socket.emit("QUESTION",data);
+        //this.props.socket.emit("QUESTION",data);
 
-        this.props.socket.on("QUESTION", question =>{
-            this.setState({
-              question:[question]
-            })
-        })
+        // this.props.socket.on("QUESTION", question =>{
+        //     this.setState({
+        //       question:[question]
+        //     })
+        // })
 
         this.setState({
             color: "#714C8A"
@@ -159,7 +159,7 @@ class Answers extends React.Component {
             score: scorevalue,
             code: this.state.code
         }
-        this.props.socket.emit("SCORE",data);
+        //this.props.socket.emit("SCORE",data);
 
         // data={
         //     code: this.state.code
